@@ -5,10 +5,10 @@
         /// <summary>
         /// sqlite连接字符串
         /// </summary>
-        public static string DbType { get; set; }
+        public string DbType { get; set; } = string.Empty;
         /// <summary>
         /// pg链接字符串
         /// </summary>
-        public static string ConnectionStrings { get; set; }
+        public string ConnectionStrings { get; set; } = string.Empty;
     }
 }

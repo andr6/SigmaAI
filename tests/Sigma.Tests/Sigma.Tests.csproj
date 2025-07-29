@@ -14,11 +14,13 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageReference Include="Moq" Version="4.20.70" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\LLMJson\LLMJson.csproj" />
     <ProjectReference Include="..\..\src\Sigma.LLM\Sigma.LLM.csproj" />
+    <ProjectReference Include="..\..\src\Sigma.Core\Sigma.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

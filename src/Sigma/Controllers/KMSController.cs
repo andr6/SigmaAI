@@ -5,6 +5,7 @@ using Sigma.Core.Repositories;
 using Coravel.Queuing.Interfaces;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sigma.Controllers
 {
@@ -13,7 +14,8 @@ namespace Sigma.Controllers
     /// </summary>
     /// <param name="_taskBroker"></param>
     [Route("api/[controller]/[action]")]
-    [ApiController]
+[ApiController]
+[Authorize(Roles = "Admin")]
     [ApiExplorerSettings(IgnoreApi = true)]
     public class KMSController : ControllerBase
     {

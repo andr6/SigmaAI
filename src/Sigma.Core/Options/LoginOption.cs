@@ -2,8 +2,8 @@
 {
     public class LoginOption
     {
-        public static string User { get; set; }
+        public string User { get; set; } = string.Empty;
 
-        public static string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }

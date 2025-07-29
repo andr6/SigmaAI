@@ -108,6 +108,24 @@ namespace Sigma.Core.Domain.Service
                 case Model.Enum.AIType.DashScope:
                     memory.WithDashScopeDefaults(embedModel.ModelKey);
                     break;
+
+                case Model.Enum.AIType.Claude:
+                    var claudeClient = new HttpClient();
+                    memory.WithOpenAITextEmbeddingGeneration(new OpenAIConfig()
+                    {
+                        APIKey = embedModel.ModelKey,
+                        EmbeddingModel = embedModel.ModelName
+                    }, null, false, claudeClient);
+                    break;
+
+                case Model.Enum.AIType.Gemini:
+                    var geminiClient = new HttpClient();
+                    memory.WithOpenAITextEmbeddingGeneration(new OpenAIConfig()
+                    {
+                        APIKey = embedModel.ModelKey,
+                        EmbeddingModel = embedModel.ModelName
+                    }, null, false, geminiClient);
+                    break;
             }
         }
 
@@ -157,6 +175,24 @@ namespace Sigma.Core.Domain.Service
                         ApiKey = chatModel.ModelKey,
                     });
                     break;
+
+                case Model.Enum.AIType.Claude:
+                    var claudeChatClient = new HttpClient();
+                    memory.WithOpenAITextGeneration(new OpenAIConfig()
+                    {
+                        APIKey = chatModel.ModelKey,
+                        TextModel = chatModel.ModelName
+                    }, null, claudeChatClient);
+                    break;
+
+                case Model.Enum.AIType.Gemini:
+                    var geminiChatClient = new HttpClient();
+                    memory.WithOpenAITextGeneration(new OpenAIConfig()
+                    {
+                        APIKey = chatModel.ModelKey,
+                        TextModel = chatModel.ModelName
+                    }, null, geminiChatClient);
+                    break;
             }
         }
 
@@ -165,27 +201,26 @@ namespace Sigma.Core.Domain.Service
             string VectorDb = _config["KernelMemory:VectorDb"].ConvertToString();
             string ConnectionString = _config["KernelMemory:ConnectionString"].ConvertToString();
             string TableNamePrefix = _config["KernelMemory:TableNamePrefix"].ConvertToString();
+
             switch (VectorDb)
             {
                 case "Postgres":
-                    memory.WithPostgresMemoryDb(new PostgresConfig()
+                    memory.WithPostgresMemoryDb(new PostgresConfig
                     {
                         ConnectionString = ConnectionString,
                         TableNamePrefix = TableNamePrefix
                     });
                     break;
-
-                case "Disk":
-                    memory.WithSimpleVectorDb(new SimpleVectorDbConfig()
-                    {
-                        StorageType = FileSystemTypes.Disk
-                    });
-                    break;
-
                 case "Memory":
-                    memory.WithSimpleVectorDb(new SimpleVectorDbConfig()
+                    memory.WithSimpleVectorDb(new SimpleVectorDbConfig
                     {
                         StorageType = FileSystemTypes.Volatile
+                    });
+                    break;
+                default:
+                    memory.WithSimpleVectorDb(new SimpleVectorDbConfig
+                    {
+                        StorageType = FileSystemTypes.Disk
                     });
                     break;
             }

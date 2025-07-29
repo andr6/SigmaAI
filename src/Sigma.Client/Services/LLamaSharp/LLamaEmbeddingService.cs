@@ -1,6 +1,7 @@
 ﻿using Sigma.Core.Options;
 using LLama;
 using LLama.Common;
+using Microsoft.Extensions.Options;
 
 namespace Sigma.Services.LLamaSharp
 {
@@ -15,11 +16,13 @@ namespace Sigma.Services.LLamaSharp
     public class LLamaEmbeddingService : IDisposable, ILLamaEmbeddingService
     {
         private LLamaEmbedder _embedder;
+        private readonly LLamaSharpOption _option;
 
-        public LLamaEmbeddingService()
+        public LLamaEmbeddingService(IOptions<LLamaSharpOption> option)
         {
+            _option = option.Value;
 
-            var @params = new ModelParams(LLamaSharpOption.Embedding) { EmbeddingMode = true };
+            var @params = new ModelParams(_option.Embedding) { EmbeddingMode = true };
             using var weights = LLamaWeights.LoadFromFile(@params);
             _embedder = new LLamaEmbedder(weights, @params);
         }
