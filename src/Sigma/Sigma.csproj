@@ -36,6 +36,9 @@
         <None Update="..\..\scripts\cyberintel_runner.py">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <None Update="..\..\scripts\gan_range_runner.py">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
   </ItemGroup>
 	
 </Project>
