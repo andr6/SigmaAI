@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "description": "Generate detection rules from extracted IOCs",
+  "execution_settings": {
+    "default": {
+      "temperature": 0.2,
+      "top_p": 0.8
+    }
+  }
+}

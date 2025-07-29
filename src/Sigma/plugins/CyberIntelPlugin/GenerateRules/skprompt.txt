@@ -1,0 +1,12 @@
+Use the provided Indicators of Compromise to craft concise detection rules for various security platforms.
+
+Input IOCs:
+{{$iocs}}
+
+Generate rules for:
+- Microsoft Sentinel
+- Splunk
+- Network IPS/IDS
+- Firewalls
+
+Return the rules in a readable list grouped by platform.

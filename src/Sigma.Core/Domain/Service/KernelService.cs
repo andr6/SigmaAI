@@ -272,6 +272,7 @@ namespace Sigma.Core.Domain.Service
             kernel.ImportPluginFromObject(new ConversationSummaryPlugin(), "ConversationSummaryPlugin");
             //kernel.ImportPluginFromObject(new TimePlugin(), "TimePlugin");
             kernel.ImportPluginFromPromptDirectory(Path.Combine(RepoFiles.SamplePluginsPath(), "KMSPlugin"));
+            kernel.ImportPluginFromPromptDirectory(Path.Combine(RepoFiles.SamplePluginsPath(), "CyberIntelPlugin"));
         }
 
         /// <summary>
