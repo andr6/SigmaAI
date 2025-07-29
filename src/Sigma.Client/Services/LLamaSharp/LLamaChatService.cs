@@ -2,6 +2,7 @@
 using LLama;
 using LLama.Common;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Sigma.Services.LLamaSharp
 {
@@ -16,13 +17,15 @@ namespace Sigma.Services.LLamaSharp
         private readonly ChatSession _session;
         private readonly LLamaContext _context;
         private readonly ILogger<LLamaChatService> _logger;
+        private readonly LLamaSharpOption _option;
         private bool _continue = false;
 
         private const string SystemPrompt = "You are a personal assistant who needs to help users .";
 
-        public LLamaChatService(ILogger<LLamaChatService> logger)
+        public LLamaChatService(ILogger<LLamaChatService> logger, IOptions<LLamaSharpOption> option)
         {
-            var @params = new ModelParams(LLamaSharpOption.Chat)
+            _option = option.Value;
+            var @params = new ModelParams(_option.Chat)
             {
                 ContextSize = 2048,
             };

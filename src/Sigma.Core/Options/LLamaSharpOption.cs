@@ -2,11 +2,11 @@
 {
     public class LLamaSharpOption
     {
-        public static string RunType { get; set; }
-        public static string Chat { get; set; }
+        public string RunType { get; set; } = "CPU";
+        public string Chat { get; set; } = string.Empty;
 
-        public static string Embedding { get; set; }
+        public string Embedding { get; set; } = string.Empty;
 
-        public static string FileDirectory { get; set; } = Directory.GetCurrentDirectory();
+        public string FileDirectory { get; set; } = Directory.GetCurrentDirectory();
     }
 }

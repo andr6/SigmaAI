@@ -106,6 +106,24 @@ namespace Sigma.Core.Domain.Service
                     builder.Services.AddDashScopeChatCompletion(chatModel.ModelKey, chatModel.ModelName, chatModel.ModelDescription);
                     break;
 
+                case Model.Enum.AIType.Claude:
+                    var claudeClient = new HttpClient();
+                    builder.AddOpenAIChatCompletion(
+                        modelId: chatModel.ModelName,
+                        apiKey: chatModel.ModelKey,
+                        chatModel.ModelDescription,
+                        httpClient: claudeClient);
+                    break;
+
+                case Model.Enum.AIType.Gemini:
+                    var geminiClient = new HttpClient();
+                    builder.AddOpenAIChatCompletion(
+                        modelId: chatModel.ModelName,
+                        apiKey: chatModel.ModelKey,
+                        chatModel.ModelDescription,
+                        httpClient: geminiClient);
+                    break;
+
                 case Model.Enum.AIType.Mock:
                     //builder.Services.AddKeyedSingleton<ITextGenerationService>(chatModel.ModelDescription, new MockTextCompletion());
                     builder.Services.AddKeyedSingleton<IChatCompletionService>(chatModel.ModelDescription, new MockTextCompletion());
@@ -136,6 +154,10 @@ namespace Sigma.Core.Domain.Service
 
                 foreach (var plug in plguinList)
                 {
+                    if(!Uri.TryCreate(plug.Url, UriKind.Absolute, out var validated) || validated.Scheme != Uri.UriSchemeHttps)
+                    {
+                        continue;
+                    }
                     if (plug.Type == PluginType.OpenAPI)
                     {
                         var openApi = await _kernel.CreatePluginFromOpenApiAsync(plug.Name, new Uri(plug.Url), new()
