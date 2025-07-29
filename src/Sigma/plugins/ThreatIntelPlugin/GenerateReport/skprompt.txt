@@ -1,0 +1,11 @@
+Analyze the following CVE or vulnerability data and produce a concise Cyber Threat Intelligence Report.
+
+Input Data:
+{{$data}}
+
+The report should include:
+- **Threat Summary** describing the overall risk
+- **Vulnerabilities** list
+- **Recommended Mitigations**
+
+Return the report in Markdown format.
