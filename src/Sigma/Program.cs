@@ -54,6 +54,8 @@ builder.Services.AddSingleton(sp => new FunctionService(sp, [typeof(App).Assembl
 builder.Services.AddScoped<FunctionTest>();
 
 builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddScoped<IModelMetricsService, ModelMetricsService>();
+builder.Services.AddScoped<BackgroundJobService>();
 builder.Services.AddScoped<IHttpService, HttpService>();
 builder.Services.AddScoped<IImportKMSService, ImportKMSService>();
 builder.Services.AddScoped<IKernelService, KernelService>();
@@ -100,29 +102,27 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
-builder.Configuration.GetSection("DBConnection").Get<DBConnectionOption>();
-builder.Configuration.GetSection("Login").Get<LoginOption>();
-builder.Configuration.GetSection("LLamaSharp").Get<LLamaSharpOption>();
-if (LLamaSharpOption.RunType.ToUpper() == "CPU")
+builder.Services.Configure<DBConnectionOption>(builder.Configuration.GetSection("DBConnection"));
+builder.Services.Configure<LoginOption>(builder.Configuration.GetSection("Login"));
+builder.Services.Configure<LLamaSharpOption>(builder.Configuration.GetSection("LLamaSharp"));
+
+var llamaOptions = builder.Configuration.GetSection("LLamaSharp").Get<LLamaSharpOption>() ?? new();
+if (llamaOptions.RunType.ToUpper() == "CPU")
 {
-    NativeLibraryConfig
-       .Instance
-       .WithCuda(false)
-       .WithLogs(true);
+    NativeLibraryConfig.Instance.WithCuda(false).WithLogs(true);
 }
-else if (LLamaSharpOption.RunType.ToUpper() == "GPU")
+else if (llamaOptions.RunType.ToUpper() == "GPU")
 {
-    NativeLibraryConfig
-    .Instance
-    .WithCuda(true)
-    .WithLogs(true);
+    NativeLibraryConfig.Instance.WithCuda(true).WithLogs(true);
 }
 
 var app = builder.Build();
 
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
 using var scope = app.Services.CreateScope();
 
-//codefirst ´´½¨±í
+//codefirst Â´Â´Â½Â¨Â±Ã­
 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 //db.Database.EnsureCreated();
 db.Database.Migrate();

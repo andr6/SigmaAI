@@ -6,6 +6,7 @@ using Sigma.Core.Repositories;
 using Sigma.Core.Utils;
 using Downloader;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 using System.ComponentModel;
 
 namespace Sigma.Components.Pages.Setting.AIModel
@@ -19,6 +20,7 @@ namespace Sigma.Components.Pages.Setting.AIModel
         [Inject] protected IAIModels_Repositories _aimodels_Repositories { get; set; }
         [Inject] protected MessageService? Message { get; set; }
         [Inject] public HttpClient HttpClient { get; set; }
+        [Inject] private IOptions<LLamaSharpOption> Options { get; set; }
 
         [Inject] private NavigationManager NavigationManager { get; set; }
 
@@ -49,7 +51,7 @@ namespace Sigma.Components.Pages.Setting.AIModel
                     _aiModel = _aimodels_Repositories.GetFirst(p => p.Id == ModelId);
                 }
                 //目前只支持gguf的 所以筛选一下
-                _modelFiles = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), LLamaSharpOption.FileDirectory)).Where(p => p.Contains(".gguf")).ToArray();
+                _modelFiles = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), Options.Value.FileDirectory)).Where(p => p.Contains(".gguf")).ToArray();
                 if (!string.IsNullOrEmpty(ModelPath))
                 {
                     //下载页跳入
@@ -116,7 +118,7 @@ namespace Sigma.Components.Pages.Setting.AIModel
 
             _download = DownloadBuilder.New()
             .WithUrl(_downloadUrl)
-            .WithDirectory(Path.Combine(Directory.GetCurrentDirectory(), LLamaSharpOption.FileDirectory))
+            .WithDirectory(Path.Combine(Directory.GetCurrentDirectory(), Options.Value.FileDirectory))
             .WithConfiguration(new DownloadConfiguration()
             {
                 ParallelCount = 5,
@@ -144,7 +146,7 @@ namespace Sigma.Components.Pages.Setting.AIModel
             _aiModel.ModelName = _download.Package.FileName;
             _downloadModalVisible = false;
             _downloadStarted = false;
-            _modelFiles = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), LLamaSharpOption.FileDirectory));
+            _modelFiles = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), Options.Value.FileDirectory));
             InvokeAsync(StateHasChanged);
         }
 

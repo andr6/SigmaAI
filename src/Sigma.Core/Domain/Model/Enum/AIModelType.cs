@@ -25,6 +25,12 @@ namespace Sigma.Core.Domain.Model.Enum
         [Display(Name = "Ollama")]
         Ollama = 6,
 
+        [Display(Name = "Anthropic Claude")]
+        Claude = 7,
+
+        [Display(Name = "Google Gemini")]
+        Gemini = 8,
+
         [Display(Name = "模拟输出")]
         Mock = 100,
     }

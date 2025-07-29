@@ -5,14 +5,14 @@
         /// <summary>
         /// 向量库
         /// </summary>
-        public static string VectorDb { get; set; }
+        public string VectorDb { get; set; } = "Memory";
         /// <summary>
         /// 连接字符串
         /// </summary>
-        public static string ConnectionString { get; set; }
+        public string ConnectionString { get; set; } = string.Empty;
         /// <summary>
         /// 表前缀
         /// </summary>
-        public static string TableNamePrefix { get; set; }
+        public string TableNamePrefix { get; set; } = string.Empty;
     }
 }

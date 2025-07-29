@@ -17,7 +17,8 @@ namespace Sigma.Core.Domain.Service
     public class ChatService(
         IKernelService _kernelService,
         IKMService _kMService,
-        IKmsDetails_Repositories _kmsDetails_Repositories
+        IKmsDetails_Repositories _kmsDetails_Repositories,
+        IModelMetricsService _metrics
         ) : IChatService
     {
         private JsonSerializerOptions JsonSerializerOptions = new()
@@ -78,8 +79,10 @@ namespace Sigma.Core.Domain.Service
                 prompt = GenerateFuncionPrompt(_kernel) + prompt;
             }
 
+            var start = DateTime.UtcNow;
             await foreach (var content in Execute())
                 yield return content;
+            await _metrics.LogUsageAsync(app.Name, DateTime.UtcNow - start, true);
 
             async IAsyncEnumerable<StreamingKernelContent> Execute()
             {
