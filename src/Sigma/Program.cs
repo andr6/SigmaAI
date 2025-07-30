@@ -20,6 +20,7 @@ using Sigma.Data;
 using Sigma.plugins.Functions;
 using Sigma.Services;
 using Sigma.Services.LLamaSharp;
+using Sigma;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 

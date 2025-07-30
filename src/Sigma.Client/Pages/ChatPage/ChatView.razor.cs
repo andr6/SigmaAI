@@ -67,12 +67,8 @@ namespace Sigma.Components.Pages.ChatPage
         [Inject]
         private LayoutService LayoutService { get; set; }
 
-        private bool _loading = false;
-
         //private List<MessageInfo> MessageList = [];
         private string? _messageInput;
-
-        private string _json = "";
         private bool Sendding = false;
 
         private string[] _selectedApps = [];

@@ -4,6 +4,7 @@ using Sigma.Core.Options;
 using Sigma.Core.Repositories;
 using Sigma.Core.Utils;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 
 namespace Sigma.Components.Pages.Setting.User
 {
@@ -16,6 +17,8 @@ namespace Sigma.Components.Pages.Setting.User
         [Inject] public HttpClient HttpClient { get; set; }
 
         [Inject] private NavigationManager NavigationManager { get; set; }
+
+        [Inject] private IOptions<LoginOption> LoginOptions { get; set; } = default!;
 
         private Users _userModel = new Users();
         private string _password = "";
@@ -42,7 +45,7 @@ namespace Sigma.Components.Pages.Setting.User
                 //新增
                 _userModel.Id = Guid.NewGuid().ToString();
 
-                if (_userModel.No == LoginOption.User)
+                if (_userModel.No == LoginOptions.Value.User)
                 {
                     _ = Message.Error("工号不能为管理员账号！", 2);
                     return;
