@@ -23,7 +23,7 @@ namespace Sigma.Services.LLamaSharp
 
         public async Task ChatStream(OpenAIModel model, HttpContext HttpContext)
         {
-            HttpContext.Response.Headers.Add("Content-Type", "text/event-stream");
+            HttpContext.Response.Headers.Append("Content-Type", "text/event-stream");
             OpenAIStreamResult result = new OpenAIStreamResult();
             result.created = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             result.choices = new List<StreamChoicesModel>() { new StreamChoicesModel() { delta = new OpenAIMessage() { role = "assistant" } } };
