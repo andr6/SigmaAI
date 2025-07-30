@@ -1,89 +1,73 @@
-<h1 align="center">🤖 Sigma AI Platform</h1>
-
-<div align="center">
-
-An out-of-box enterprise intelligence platform based on LLM and GenAI.
-
-Our goal is to empower your business systems to become intelligent, thereby achieving greater business value.
+# Sigma AI Platform
 
 ![Build](https://img.shields.io/github/actions/workflow/status/ElderJames/SigmaAI/dotnet.yml?style=flat-square)
 
-</div>
+Sigma AI is an extensible enterprise platform combining large language models (LLMs) with a plugin driven .NET 8 application.  The core goal is to expose advanced AI capabilities as easily consumable APIs so existing business systems can become intelligence enabled.
 
-*Note that this is still in early development*
+## Features
 
-English | [简体中文](README_zh-CN.md)
+- **LLM Integration**  
+  - OpenAI compatible REST endpoints.
+  - Local model support through **LLamaSharp** and **Ollama**.
+  - Function Calling via OpenAI/SparkDesk/DashScope or intent based recognition when native APIs are unavailable.
+- **Plugins and Native Functions**  
+  - Semantic Kernel based plugin system for calling external REST APIs or annotated C# methods.  
+  - Built‑in plugins:
+    - *CyberIntelPlugin* – extract IOCs from CTI PDFs and generate detection rules.
+    - *ThreatIntelPlugin* – create threat intelligence reports from CVE or vulnerability data.
+    - *SecurityAssessmentPlugin* – parse nmap output and recommend controls.
+    - *CyberRangeFunctions* – drive a GAN cyber‑range simulator.
+- **Knowledge Driven RAG** using Kernel Memory for document indexing and retrieval.
+- **Security Assessment Module** leveraging reinforcement learning agents to update policies.
+- **Threat Intel Backend**  
+  - FastAPI service ingesting indicators from OTX, Shodan, Censys and VirusTotal.  
+  - IOC summaries produced with the configured LLM provider.
+- **React/Next.js Frontend** showing live IOC feeds with AI generated summaries.
+- **Auxiliary Tools**  
+  - `scripts/threat_report_parser.py` to convert CTI reports to JSON or STIX.  
+  - `scripts/gan_range_runner.py` and `cyberintel_runner.py` command line helpers.
 
-## ✨ Implemented Features
+## Installation
 
-- Very easy to integrate existing systems through WebAPI or Native Function.
-- Support for all LLMs with OpenAI restful protocol.
-- Support integration of local models using LLamaSharp or Ollama.
-- Support for native Function Calling API like OpenAI/SparkDesk/DashScope.
-- Support for implementing Function Calling without native API through intent recognition.
-- Support knowledge-based RAG
-- Automated Security Assessment module leveraging reinforcement learning and LLMs
-- Multi-source IOC ingestion from OTX, Shodan, Censys, and VirusTotal
-- FastAPI backend with SQLModel-based storage and REST API
-- React frontend (Next.js + Chakra UI) with live IOC feed and AI summaries
-- Based on an earlier version of AntSK
+### Prerequisites
 
-## 📦 Installation Guide
+- [.NET SDK 8](https://dotnet.microsoft.com/download)
+- Python 3.8+
+- Node.js 18+
+- Optional API keys: `OPENAI_API_KEY`, `OTX_API_KEY`, `SHODAN_API_KEY`, `CENSYS_UID`, `CENSYS_SECRET`, `VT_API_KEY`.
 
-### Prerequirement
-
-- Install [.NET Core SDK](https://dotnet.microsoft.com/download/dotnet-core/8.0?WT.mc_id=DT-MVP-5003987).
-
-- Clone and run
+### Steps
 
 ```bash
-$ git clone https://github.com/ElderJames/SigmaAI.git
-$ cd SigmaAI
-$ dotnet run --project src/sigma
+# clone repository
+git clone https://github.com/ElderJames/SigmaAI.git
+cd SigmaAI
 ```
 
-- Create a account and engjoy!
-### Python backend
-```bash
-$ pip install -r backend/requirements.txt
-$ uvicorn backend.main:app --reload
-```
+1. **Run the .NET server**
+   ```bash
+   dotnet run --project src/Sigma
+   ```
+2. **Start the Python backend**
+   ```bash
+   pip install -r backend/requirements.txt
+   uvicorn backend.main:app --reload
+   ```
+3. **Launch the React frontend**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
-### React frontend
-```bash
-$ cd frontend
-$ npm install
-$ npm run dev
-```
+Navigate to the printed URL to access the web interface.
 
-## 🔨 Development
+## Development Notes
 
-- Technology stack
-  - .NET 8,EF Core and Blazor is the main tech.
-  - Using Ant Design Blazar for the beautiful interactive WebUI.
-  - Using Semantic Kernel is used to integrate Large Language Models.
-  - Using Kernel Memory for searching and indexing of RAG.
+- Main stack: **.NET 8**, **EF Core**, **Blazor**, **Semantic Kernel** and **Kernel Memory**.
+- Unit tests reside under `tests/` and can be executed with `dotnet test`.
+- Python utilities rely on the packages listed in `backend/requirements.txt`.
 
-## 🤝 Contributing
+## License
 
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/ElderJames/SigmaAI/pulls)
-
-If you would like to contribute, feel free to create a [Pull Request](https://github.com/ElderJames/SigmaAI/pulls), or give us [Bug Report](https://github.com/ElderJames/SigmaAI/issues/new).
-
-
-## 💕 Contributors
-
-This project exists thanks to all the people who contribute.
-
-<a href="https://github.com/ElderJames/SigmaAI/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=ElderJames/SigmaAI&max=1000&columns=15&anon=1" />
-</a>
-
-## 🚨 Code of Conduct
-
-This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.
-For more information see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
-
-## ☀️ License
-
-Licensed under the Apache 2.0 license.
+Sigma AI is released under the Apache 2.0 license.
