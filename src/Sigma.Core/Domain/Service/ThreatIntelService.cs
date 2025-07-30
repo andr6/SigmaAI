@@ -6,6 +6,8 @@ using Microsoft.SemanticKernel;
 using Sigma.Core.Domain.Interface;
 using Sigma.Core.Repositories;
 using Sigma.Core.Utils;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Sigma.Core.Domain.Service
 {
@@ -14,6 +16,7 @@ namespace Sigma.Core.Domain.Service
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
         private readonly IKernelService _kernelService;
+        private readonly ThreatSentinelAgent _agent = new();
 
         public ThreatIntelService(HttpClient httpClient, IConfiguration config, IKernelService kernelService)
         {
@@ -46,6 +49,11 @@ namespace Sigma.Core.Domain.Service
             var func = kernel.CreateFunctionFromPrompt(prompt);
             var result = await kernel.InvokeAsync(func, new() { ["data"] = threatData });
             return result.GetValue<string>();
+        }
+
+        public Task<string> InvestigateWithThreatSentinelAsync(string indicator)
+        {
+            return _agent.InvestigateAsync(indicator);
         }
     }
 }
