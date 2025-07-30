@@ -23,6 +23,9 @@ English | [简体中文](README_zh-CN.md)
 - Support for implementing Function Calling without native API through intent recognition.
 - Support knowledge-based RAG
 - Automated Security Assessment module leveraging reinforcement learning and LLMs
+- Multi-source IOC ingestion from OTX, Shodan, Censys, and VirusTotal
+- FastAPI backend with SQLModel-based storage and REST API
+- React frontend (Next.js + Chakra UI) with live IOC feed and AI summaries
 - Based on an earlier version of AntSK
 
 ## 📦 Installation Guide
@@ -40,6 +43,18 @@ $ dotnet run --project src/sigma
 ```
 
 - Create a account and engjoy!
+### Python backend
+```bash
+$ pip install -r backend/requirements.txt
+$ uvicorn backend.main:app --reload
+```
+
+### React frontend
+```bash
+$ cd frontend
+$ npm install
+$ npm run dev
+```
 
 ## 🔨 Development
 
