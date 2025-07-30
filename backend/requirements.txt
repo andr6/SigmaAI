@@ -3,3 +3,6 @@ uvicorn
 sqlmodel
 openai
 requests
+PyPDF2
+beautifulsoup4
+stix2

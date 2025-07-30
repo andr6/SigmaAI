@@ -1,0 +1,28 @@
+SigmaAI Launch Instructions
+===========================
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/ElderJames/SigmaAI.git
+   cd SigmaAI
+   ```
+
+2. **Run the .NET core services**
+   ```bash
+   dotnet run --project src/sigma
+   ```
+
+3. **Start the Python backend**
+   ```bash
+   pip install -r backend/requirements.txt
+   uvicorn backend.main:app --reload
+   ```
+
+4. **Launch the React frontend**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+Navigate to the shown URL in your browser to access the platform.
