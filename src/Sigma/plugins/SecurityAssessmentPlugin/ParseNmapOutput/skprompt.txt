@@ -1,0 +1,6 @@
+Summarize the following nmap scan result and recommend basic security controls.
+
+Scan output:
+{{$scan}}
+
+Return a short JSON with keys `openPorts` and `recommendedControls`.
