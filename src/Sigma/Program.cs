@@ -75,6 +75,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISecurityAssessmentService, SecurityAssessmentService>();
 
 builder.Services.AddQueue();
 

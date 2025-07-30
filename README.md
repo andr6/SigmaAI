@@ -22,6 +22,7 @@ English | [简体中文](README_zh-CN.md)
 - Support for native Function Calling API like OpenAI/SparkDesk/DashScope.
 - Support for implementing Function Calling without native API through intent recognition.
 - Support knowledge-based RAG
+- Automated Security Assessment module leveraging reinforcement learning and LLMs
 - Based on an earlier version of AntSK
 
 ## 📦 Installation Guide
