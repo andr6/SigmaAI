@@ -36,7 +36,8 @@ namespace Sigma.Tests
             var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string,string>
             {
                 ["ThreatIntel:ExaEndpoint"] = "https://example.com/search",
-                ["ThreatIntel:ExaApiKey"] = "key"
+                ["ThreatIntel:ExaApiKey"] = "key",
+                ["ThreatIntel:SentinelEndpoint"] = "https://sentinel/api/investigate"
             }).Build();
             var kernelService = new Mock<IKernelService>();
             var service = new ThreatIntelService(client, config, kernelService.Object);
@@ -47,6 +48,22 @@ namespace Sigma.Tests
             Assert.NotNull(handler.LastRequest);
             Assert.Equal("https://example.com/search?q=cve-123", handler.LastRequest!.RequestUri!.ToString());
             Assert.True(handler.LastRequest!.Headers.Contains("Authorization"));
+        }
+
+        [Fact]
+        public async Task InvestigateWithThreatSentinelAsync_ReturnsAnalysis()
+        {
+            var handler = new TestHandler();
+            var client = new HttpClient(handler);
+            var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string,string>()).Build();
+            var kernelService = new Mock<IKernelService>();
+            var service = new ThreatIntelService(client, config, kernelService.Object);
+
+            var json = await service.InvestigateWithThreatSentinelAsync("8.8.8.8");
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json)!;
+
+            Assert.Equal("8.8.8.8", (string)result.indicator);
+            Assert.True((double)result.riskScore >= 0.5);
         }
     }
 }

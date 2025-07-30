@@ -7,5 +7,6 @@ namespace Sigma.Core.Domain.Interface
     {
         Task<string> RetrieveThreatDataAsync(string query);
         Task<string> GenerateReportAsync(Apps app, string threatData);
+        Task<string> InvestigateWithThreatSentinelAsync(string indicator);
     }
 }
