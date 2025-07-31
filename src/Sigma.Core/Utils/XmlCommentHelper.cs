@@ -10,7 +10,7 @@ using System.Xml.XPath;
 namespace Sigma.Core.Utils
 {
     /// <summary>
-    /// 注释辅助类
+    /// Comment helper class
     /// </summary>
     public class XmlCommentHelper
     {
@@ -21,7 +21,7 @@ namespace Sigma.Core.Utils
         List<XPathNavigator> navigators = new List<XPathNavigator>();
 
         /// <summary>
-        /// 从当前dll文件中加载所有的xml文件
+        /// Load all XML files from the current DLL directory
         /// </summary>
         public void LoadAll()
         {
@@ -35,7 +35,7 @@ namespace Sigma.Core.Utils
             }
         }
         /// <summary>
-        /// 从xml中加载
+        /// Load from XML strings
         /// </summary>
         /// <param name="xmls"></param>
         public void LoadXml(params string[] xmls)
@@ -46,7 +46,7 @@ namespace Sigma.Core.Utils
             }
         }
         /// <summary>
-        /// 从文件中加载
+        /// Load from files
         /// </summary>
         /// <param name="xmlFiles"></param>
         public void Load(params string[] xmlFiles)
@@ -58,7 +58,7 @@ namespace Sigma.Core.Utils
             }
         }
         /// <summary>
-        /// 从流中加载
+        /// Load from streams
         /// </summary>
         /// <param name="streams"></param>
         public void Load(params Stream[] streams)
@@ -71,11 +71,11 @@ namespace Sigma.Core.Utils
         }
 
         /// <summary>
-        /// 读取类型中的注释
+        /// Read comments from a type
         /// </summary>
-        /// <param name="type">类型</param>
-        /// <param name="xPath">注释路径</param>
-        /// <param name="humanize">可读性优化(比如：去掉xml标记)</param>
+        /// <param name="type">Type</param>
+        /// <param name="xPath">Comment path</param>
+        /// <param name="humanize">Humanize for readability (for example remove XML tags)</param>
         /// <returns></returns>
         public string GetTypeComment(Type type, string xPath = "summary", bool humanize = true)
         {
@@ -83,11 +83,11 @@ namespace Sigma.Core.Utils
             return GetComment(typeMemberName, xPath, humanize);
         }
         /// <summary>
-        /// 读取字段或者属性的注释
+        /// Read comments from a field or property
         /// </summary>
-        /// <param name="fieldOrPropertyInfo">字段或者属性</param>
-        /// <param name="xPath">注释路径</param>
-        /// <param name="humanize">可读性优化(比如：去掉xml标记)</param>
+        /// <param name="fieldOrPropertyInfo">Field or property</param>
+        /// <param name="xPath">Comment path</param>
+        /// <param name="humanize">Humanize for readability (for example remove XML tags)</param>
         /// <returns></returns>
         public string GetFieldOrPropertyComment(MemberInfo fieldOrPropertyInfo, string xPath = "summary", bool humanize = true)
         {
@@ -95,11 +95,11 @@ namespace Sigma.Core.Utils
             return GetComment(fieldOrPropertyMemberName, xPath, humanize);
         }
         /// <summary>
-        /// 读取方法中的注释
+        /// Read comments from a method
         /// </summary>
-        /// <param name="methodInfo">方法</param>
-        /// <param name="xPath">注释路径</param>
-        /// <param name="humanize">可读性优化(比如：去掉xml标记)</param>
+        /// <param name="methodInfo">Method</param>
+        /// <param name="xPath">Comment path</param>
+        /// <param name="humanize">Humanize for readability (for example remove XML tags)</param>
         /// <returns></returns>
         public string GetMethodComment(MethodInfo methodInfo, string xPath = "summary", bool humanize = true)
         {
@@ -107,20 +107,20 @@ namespace Sigma.Core.Utils
             return GetComment(methodMemberName, xPath, humanize);
         }
         /// <summary>
-        /// 读取方法中的返回值注释
+        /// Read return value comments from a method
         /// </summary>
-        /// <param name="methodInfo">方法</param>
-        /// <param name="humanize">可读性优化(比如：去掉xml标记)</param>
+        /// <param name="methodInfo">Method</param>
+        /// <param name="humanize">Humanize for readability (for example remove XML tags)</param>
         /// <returns></returns>
         public string GetMethodReturnComment(MethodInfo methodInfo, bool humanize = true)
         {
             return GetMethodComment(methodInfo, "returns", humanize);
         }
         /// <summary>
-        /// 读取参数的注释
+        /// Read comments from a parameter
         /// </summary>
-        /// <param name="parameterInfo">参数</param>
-        /// <param name="humanize">可读性优化(比如：去掉xml标记)</param>
+        /// <param name="parameterInfo">Parameter</param>
+        /// <param name="humanize">Humanize for readability (for example remove XML tags)</param>
         /// <returns></returns>
         public string GetParameterComment(ParameterInfo parameterInfo, bool humanize = true)
         {
@@ -130,10 +130,10 @@ namespace Sigma.Core.Utils
             return GetComment(methodMemberName, $"param[@name='{parameterInfo.Name}']", humanize);
         }
         /// <summary>
-        /// 读取方法的所有参数的注释
+        /// Read comments of all parameters of a method
         /// </summary>
-        /// <param name="methodInfo">方法</param>
-        /// <param name="humanize">可读性优化(比如：去掉xml标记)</param>
+        /// <param name="methodInfo">Method</param>
+        /// <param name="humanize">Humanize for readability (for example remove XML tags)</param>
         /// <returns></returns>
         public Dictionary<string, string> GetParameterComments(MethodInfo methodInfo, bool humanize = true)
         {
@@ -146,11 +146,11 @@ namespace Sigma.Core.Utils
             return dict;
         }
         /// <summary>
-        /// 读取指定名称节点的注释
+        /// Read comments of a specific node
         /// </summary>
-        /// <param name="name">节点名称</param>
-        /// <param name="xPath">注释路径</param>
-        /// <param name="humanize">可读性优化(比如：去掉xml标记)</param>
+        /// <param name="name">Node name</param>
+        /// <param name="xPath">Comment path</param>
+        /// <param name="humanize">Humanize for readability (for example remove XML tags)</param>
         /// <returns></returns>
         public string GetComment(string name, string xPath, bool humanize = true)
         {
@@ -167,27 +167,27 @@ namespace Sigma.Core.Utils
             return string.Empty;
         }
         /// <summary>
-        /// 读取指定节点的summary注释
+        /// Read summary comments of a specific node
         /// </summary>
-        /// <param name="name">节点名称</param>
-        /// <param name="humanize">可读性优化(比如：去掉xml标记)</param>
+        /// <param name="name">Node name</param>
+        /// <param name="humanize">Humanize for readability (for example remove XML tags)</param>
         /// <returns></returns>
         public string GetSummary(string name, bool humanize = true)
         {
             return GetComment(name, "summary", humanize);
         }
         /// <summary>
-        /// 读取指定节点的example注释
+        /// Read example comments of a specific node
         /// </summary>
-        /// <param name="name">节点名称</param>
-        /// <param name="humanize">可读性优化(比如：去掉xml标记)</param>
+        /// <param name="name">Node name</param>
+        /// <param name="humanize">Humanize for readability (for example remove XML tags)</param>
         /// <returns></returns>
         public string GetExample(string name, bool humanize = true)
         {
             return GetComment(name, "example", humanize);
         }
         /// <summary>
-        /// 获取方法的节点名称
+        /// Get the member name for a method
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
@@ -213,7 +213,7 @@ namespace Sigma.Core.Utils
             return builder.ToString();
         }
         /// <summary>
-        /// 获取类型的节点名称
+        /// Get the member name for a type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -225,7 +225,7 @@ namespace Sigma.Core.Utils
             return builder.ToString();
         }
         /// <summary>
-        /// 获取字段或者属性的节点名称
+        /// Get the member name for a field or property
         /// </summary>
         /// <param name="fieldOrPropertyInfo"></param>
         /// <returns></returns>

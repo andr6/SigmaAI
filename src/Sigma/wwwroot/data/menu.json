@@ -1,47 +1,47 @@
 ﻿[
   {
     "path": "/chat",
-    "name": "聊天",
+    "name": "Chat",
     "key": "chat",
     "icon": "wechat"
   },
   {
     "path": "/applist",
-    "name": "应用",
+    "name": "Applications",
     "key": "app",
     "icon": "windows"
   },
   {
     "path": "/kmslist",
-    "name": "知识库",
+    "name": "Knowledge Base",
     "key": "kms",
     "icon": "database"
   },
   {
     "path": "/plugins/list",
-    "name": "插件管理",
+    "name": "Plugin Management",
     "key": "plugins",
     "icon": "dropbox"
   },
   {
     "path": "/setting",
-    "name": "设置",
+    "name": "Settings",
     "key": "setting",
     "icon": "setting",
     "children": [
       {
         "path": "/setting/userlist",
-        "name": "用户管理",
+        "name": "User Management",
         "key": "setting.user"
       },
       {
         "path": "/setting/modellist",
-        "name": "模型管理",
+        "name": "Model Management",
         "key": "setting.modellist"
       },
       {
         "path": "/setting/modeldown",
-        "name": "模型下载",
+        "name": "Model Download",
         "key": "setting.modeldown"
       }
     ]

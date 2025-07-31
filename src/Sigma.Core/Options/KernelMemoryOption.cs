@@ -3,15 +3,15 @@
     public class KernelMemoryOption
     {
         /// <summary>
-        /// 向量库
+        /// Vector database type
         /// </summary>
         public string VectorDb { get; set; } = "Memory";
         /// <summary>
-        /// 连接字符串
+        /// Connection string
         /// </summary>
         public string ConnectionString { get; set; } = string.Empty;
         /// <summary>
-        /// 表前缀
+        /// Table name prefix
         /// </summary>
         public string TableNamePrefix { get; set; } = string.Empty;
     }

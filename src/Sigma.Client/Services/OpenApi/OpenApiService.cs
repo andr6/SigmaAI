@@ -39,7 +39,7 @@ namespace Sigma.Services.OpenApi
                 switch (app.Type)
                 {
                     case AppType.Chat:
-                        //普通会话
+                        // normal conversation
                         if (model.stream)
                         {
                             OpenAIStreamResult result1 = new OpenAIStreamResult();
@@ -67,7 +67,7 @@ namespace Sigma.Services.OpenApi
                         break;
 
                     case AppType.Kms:
-                        //知识库问答
+                        // knowledge base Q&A
                         if (model.stream)
                         {
                             OpenAIStreamResult result3 = new OpenAIStreamResult();
@@ -106,7 +106,7 @@ namespace Sigma.Services.OpenApi
                 string message = $"data: {JsonConvert.SerializeObject(result)}\n\n";
                 await HttpContext.Response.WriteAsync(message, Encoding.UTF8);
                 await HttpContext.Response.Body.FlushAsync();
-                //模拟延迟。
+                // simulate delay
                 await Task.Delay(TimeSpan.FromMilliseconds(50));
             }
 
@@ -117,7 +117,7 @@ namespace Sigma.Services.OpenApi
         }
 
         /// <summary>
-        /// 发送普通对话
+        /// Send a normal conversation
         /// </summary>
         /// <param name="questions"></param>
         /// <param name="history"></param>
@@ -129,7 +129,7 @@ namespace Sigma.Services.OpenApi
 
             if (string.IsNullOrEmpty(app.Prompt) || !app.Prompt.Contains("{{$input}}"))
             {
-                //如果模板为空，给默认提示词
+                // if the template is empty, add a default prompt
                 app.Prompt = app.Prompt.ConvertToString() + "{{$input}}";
             }
             KernelArguments args = new KernelArguments();
@@ -150,9 +150,9 @@ namespace Sigma.Services.OpenApi
             }
 
             var _kernel = _kernelService.GetKernelByApp(app);
-            var temperature = app.Temperature / 100; //存的是0~100需要缩小
+            var temperature = app.Temperature / 100; // value stored as 0~100, scale down
             OpenAIPromptExecutionSettings settings = new() { Temperature = temperature };
-            if (!string.IsNullOrEmpty(app.PluginList) || !string.IsNullOrEmpty(app.NativeFunctionList))//这里还需要加上本地插件的
+            if (!string.IsNullOrEmpty(app.PluginList) || !string.IsNullOrEmpty(app.NativeFunctionList)) // also include local plugins here
             {
                 _kernelService.ImportFunctionsByApp(app, _kernel);
                 settings.ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions;
@@ -179,7 +179,7 @@ namespace Sigma.Services.OpenApi
                 string message = $"data: {JsonConvert.SerializeObject(result)}\n\n";
                 await HttpContext.Response.WriteAsync(message, Encoding.UTF8);
                 await HttpContext.Response.Body.FlushAsync();
-                //模拟延迟。
+                // simulate delay
                 await Task.Delay(TimeSpan.FromMilliseconds(50));
             }
 
@@ -190,7 +190,7 @@ namespace Sigma.Services.OpenApi
         }
 
         /// <summary>
-        /// 发送知识库问答
+        /// Send knowledge base question answering
         /// </summary>
         /// <param name="questions"></param>
         /// <param name="app"></param>
@@ -223,7 +223,7 @@ namespace Sigma.Services.OpenApi
         }
 
         /// <summary>
-        /// 历史会话的会话总结
+        /// Conversation summary from history
         /// </summary>
         /// <param name="app"></param>
         /// <param name="model"></param>

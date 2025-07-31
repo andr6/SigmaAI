@@ -8,7 +8,7 @@ namespace Sigma.Core.Domain.Other
     {
         static object lockobj = new object();
         /// <summary>
-        /// 避免模型重复加载，本地缓存
+        /// Avoid loading the model repeatedly, local cache
         /// </summary>
         static Dictionary<string, (LLamaWeights, ModelParams)> dicLLamaWeights = new Dictionary<string, (LLamaWeights, ModelParams)>();
         public static (LLamaWeights, ModelParams) GetLLamaConfig(string modelPath, LLamaSharpConfig config = null)

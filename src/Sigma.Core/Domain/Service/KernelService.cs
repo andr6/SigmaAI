@@ -11,7 +11,6 @@ using Microsoft.SemanticKernel.Plugins.Core;
 using Microsoft.SemanticKernel.TextGeneration;
 using RestSharp;
 using System;
-using Sigma.LLM.Mock;
 using Sigma.Core.Domain.Model.Enum;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.SemanticKernel.Plugins.OpenApi;
@@ -124,10 +123,6 @@ namespace Sigma.Core.Domain.Service
                         httpClient: geminiClient);
                     break;
 
-                case Model.Enum.AIType.Mock:
-                    //builder.Services.AddKeyedSingleton<ITextGenerationService>(chatModel.ModelDescription, new MockTextCompletion());
-                    builder.Services.AddKeyedSingleton<IChatCompletionService>(chatModel.ModelDescription, new MockTextCompletion());
-                    break;
             }
         }
 
@@ -285,9 +280,9 @@ namespace Sigma.Core.Domain.Service
         public async Task<string> HistorySummarize(Kernel _kernel, string questions, string history)
         {
             KernelFunction sunFun = _kernel.Plugins.GetFunction("ConversationSummaryPlugin", "SummarizeConversation");
-            var summary = await _kernel.InvokeAsync(sunFun, new() { ["input"] = $"Content: {history.ToString()} {Environment.NewLine} Please summarize in Chinese" });
+            var summary = await _kernel.InvokeAsync(sunFun, new() { ["input"] = $"Content: {history.ToString()} {Environment.NewLine} Please summarize in English" });
             string his = summary.GetValue<string>();
-            var msg = $"history：{history.ToString()}{Environment.NewLine} user：{questions}"; ;
+            var msg = $"history: {history.ToString()}{Environment.NewLine} user: {questions}"; ;
             return msg;
         }
     }

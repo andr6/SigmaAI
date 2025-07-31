@@ -38,9 +38,9 @@ namespace Sigma.Components
 
         public AvatarMenuItem[] AvatarMenuItems { get; set; } = new AvatarMenuItem[]
         {
-            new() { Key = "setting", IconType = "setting", Option = "个人设置"},
+            new() { Key = "setting", IconType = "setting", Option = "Profile"},
             new() { IsDivider = true },
-            new() { Key = "logout", IconType = "logout", Option = "退出登录"}
+            new() { Key = "logout", IconType = "logout", Option = "Sign out"}
         };
 
         [Inject] protected NavigationManager NavigationManager { get; set; }
@@ -84,7 +84,7 @@ namespace Sigma.Components
             //        }
             //        else
             //        {
-            //            _ = Message.Info("管理员无需设置", 2);
+            //            _ = Message.Info("Administrators do not need to configure", 2);
             //        }
             //        break;
             //    case "logout":
@@ -111,7 +111,7 @@ namespace Sigma.Components
                     _events = new NoticeIconData[] { };
                     break;
             }
-            await MessageService.Success($"清空了{key}");
+            await MessageService.Success($"Cleared {key}");
         }
 
         public async Task HandleViewMore(string key)
