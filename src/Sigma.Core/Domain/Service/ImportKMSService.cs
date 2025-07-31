@@ -24,10 +24,10 @@ namespace Sigma.Core.Domain.Service
                 switch (req.ImportType)
                 {
                     case ImportType.File:
-                        //导入文件
+                        // import file
                         {
                             var importResult = await _memory.ImportDocumentAsync(new Document(fileid.ToString()).AddFile(req.FilePath).AddTag("kmsid", req.KmsId.ToString()), index: "kms");
-                            //查询文档数量
+                            // query document count
                             var docTextList = await _kMService.GetDocumentByFileID(km.Id, fileid.ToString());
                             string fileGuidName = Path.GetFileName(req.FilePath);
                             req.KmsDetail.FileName = req.FileName;
@@ -38,9 +38,9 @@ namespace Sigma.Core.Domain.Service
 
                     case ImportType.Url:
                         {
-                            //导入url
+                            // import URL
                             var importResult = await _memory.ImportWebPageAsync(req.Url, fileid.ToString(), new TagCollection() { { "kmsid", req.KmsId.ToString() } }, index: "kms");
-                            //查询文档数量
+                            // query document count
                             var docTextList = await _kMService.GetDocumentByFileID(km.Id, fileid.ToString());
                             req.KmsDetail.Url = req.Url;
                             req.KmsDetail.DataCount = docTextList.Count;
@@ -48,10 +48,10 @@ namespace Sigma.Core.Domain.Service
                         break;
 
                     case ImportType.Text:
-                        //导入文本
+                        // import text
                         {
                             var importResult = await _memory.ImportTextAsync(req.Text, fileid.ToString(), new TagCollection() { { "kmsid", req.KmsId.ToString() } }, index: "kms");
-                            //查询文档数量
+                            // query document count
                             var docTextList = await _kMService.GetDocumentByFileID(km.Id, fileid.ToString());
                             req.KmsDetail.Url = req.Url;
                             req.KmsDetail.DataCount = docTextList.Count;
@@ -61,7 +61,7 @@ namespace Sigma.Core.Domain.Service
                 req.KmsDetail.Status = Model.Enum.ImportKmsStatus.Success;
                 _kmsDetails_Repositories.Update(req.KmsDetail);
                 //_kmsDetails_Repositories.GetList(p => p.KmsId == req.KmsId);
-                Console.WriteLine("后台导入任务成功:" + req.KmsDetail.DataCount);
+                Console.WriteLine("Background import succeeded:" + req.KmsDetail.DataCount);
             }
             catch (Exception ex)
             {

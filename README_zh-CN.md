@@ -1,33 +1,33 @@
-<h1 align="center">🤖 Sigma AI Platform</h1>
+<h1 align="center">🤖 IntelliLink AI Platform</h1>
 
 <div align="center">
 
-一个开箱即用的基于 LLM 和 GenAI 的企业级智能平台。
+An out-of-the-box enterprise platform built on LLM and GenAI.
 
-我们的目标是赋能您的业务系统实现智能化，从而实现更大的商业价值。
+Our goal is to empower your business systems with intelligence for greater value.
 
 ![Build](https://img.shields.io/github/actions/workflow/status/ElderJames/SigmaAI/dotnet.yml?style=flat-square)
 
 </div>
 
-*注意目前仍在积极的开发阶段，正式发布前请谨慎用于生产环境。*
+*Note: this project is under active development. Avoid production use before the official release.*
 
-## ✨ 已实现的功能
+## ✨ Features
 
-- 非常容易地通过 WebAPI 或原生函数与已有系统集成。
-- 支持所有 OpenAI Restful 协议的大模型服务。
-- 支持利用 LLamaSharp 或 Ollama 集成本地模型。
-- 支持原生 Function Calling API, 如 OpenAI/SparkDesk/DashScope。
-- 支持利用语义识别使没有原生API的模型实现 Function Calling。
-- 支持基于知识的检索增强生成（RAG）
-- 本项目基于早期版本的 AntSK
+- Easy integration via WebAPI or native functions.
+- Supports all OpenAI REST protocols.
+- Local model integration through LLamaSharp or Ollama.
+- Native Function Calling APIs like OpenAI, SparkDesk and DashScope.
+- Function Calling via intent recognition when no native API is available.
+- Retrieval augmented generation (RAG) from knowledge bases.
+- Built on an early version of AntSK.
 
-## 📦 安装
+## 📦 Installation
 
 
-- 安装 [.NET Core SDK](https://dotnet.microsoft.com/download/dotnet-core/8.0?WT.mc_id=DT-MVP-5003987).
+- Install [.NET Core SDK](https://dotnet.microsoft.com/download/dotnet-core/8.0?WT.mc_id=DT-MVP-5003987).
 
-- 克隆并启动项目
+- Clone and run the project
 
   ```bash
   $ git clone https://github.com/ElderJames/SigmaAI.git
@@ -35,26 +35,26 @@
   $ dotnet run --project src/sigma
   ```
 
-- 最后创建用户，尽情享受!
+- Finally create a user and enjoy!
 
-## 🔨 开发
+## 🔨 Development
 
-- 技术栈
-  - 主要技术是 .NET 8、EF Core 和 Blazor。
-  - 使用 Ant Design Blazar 实现优美的交互界面。
-  - 使用 Semantic Kernel 集成大语言模型。
-  - 使用 Kernel Memory 实现 RAG 的拆分、索引和查询。
+- Tech stack
+  - Built with .NET 8, EF Core and Blazor.
+  - UI based on Ant Design Blazar.
+  - Semantic Kernel powers the LLM integration.
+  - Kernel Memory handles RAG splitting, indexing and search.
 
 ## 🤝 贡献
 
-[![欢迎 PR](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/ElderJames/SigmaAI/pulls)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/ElderJames/SigmaAI/pulls)
 
-如果你想来贡献, 尽管创建 [Pull Request](https://github.com/ElderJames/SigmaAI/pulls), 或者提交 [Bug Report](https://github.com/ElderJames/SigmaAI/issues/new).
+Feel free to create a [Pull Request](https://github.com/ElderJames/SigmaAI/pulls) or submit a [Bug Report](https://github.com/ElderJames/SigmaAI/issues/new).
 
 
-## 💕 贡献者
+## 💕 Contributors
 
-感谢本项目的贡献者
+Thanks to all contributors
 
 <a href="https://github.com/ElderJames/SigmaAI/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=ElderJames/SigmaAI&max=1000&columns=15&anon=1" />
@@ -62,9 +62,9 @@
 
 ## 🚨 Code of Conduct
 
-本项目采用了《贡献者公约》所定义的行为准则，以明确我们社区的预期行为。
-更多信息请见 [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
+This project follows the Contributor Covenant to define expected behavior.
+See the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct) for details.
 
-## ☀️ 授权协议
+## ☀️ License
 
 Licensed under the Apache 2.0 license.

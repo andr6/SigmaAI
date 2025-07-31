@@ -2,18 +2,18 @@
 {
     public class PageList<T>
     {
-        //查询结果
+        // query results
         public List<T> List { get; set; }
         /// <summary>
-        /// 当前页，从1开始
+        /// Current page starting from 1
         /// </summary>
         public int PageIndex { get; set; }
         /// <summary>
-        /// 每页数量
+        /// Page size
         /// </summary>
         public int PageSize { get; set; }
         /// <summary>
-        /// 总数
+        /// Total count
         /// </summary>
         public int TotalCount { get; set; }
     }

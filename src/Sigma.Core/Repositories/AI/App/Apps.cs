@@ -9,68 +9,68 @@ namespace Sigma.Core.Repositories
     public partial class Apps : EntityBase
     {
         /// <summary>
-        /// 名称
+        /// Name
         /// </summary>
         [Required]
         public string Name { get; set; }
 
         /// <summary>
-        /// 描述
+        /// Description
         /// </summary>
         [Required]
         public string Describe { get; set; }
 
         /// <summary>
-        /// 图标
+        /// Icon
         /// </summary>
         [Required]
         public string Icon { get; set; } = "appstore";
 
         /// <summary>
-        /// 类型
+        /// Type
         /// </summary>
         [Required]
         public AppType Type { get; set; } = AppType.Chat;
 
         /// <summary>
-        /// 会话模型ID
+        /// Chat model ID
         /// </summary>
         public string? ChatModelID { get; set; }
 
         /// <summary>
-        /// 向量模型ID
+        /// Embedding model ID
         /// </summary>
         public string? EmbeddingModelID { get; set; }
 
         /// <summary>
-        /// 温度
+        /// Temperature
         /// </summary>
         public double Temperature { get; set; } = 70f;
 
         /// <summary>
-        /// 提示词
+        /// Prompt
         /// </summary>
         public string? Prompt { get; set; }
 
         /// <summary>
-        /// 插件列表
+        /// Plugin list
         /// </summary>
         [Column(TypeName = "varchar(1000)")]
         public string? PluginList { get; set; }
 
         /// <summary>
-        /// 本地函数列表
+        /// Native function list
         /// </summary>
         [Column(TypeName = "varchar(1000)")]
         public string? NativeFunctionList { get; set; }
 
         /// <summary>
-        /// 知识库ID列表
+        /// Knowledge base ID list
         /// </summary>
         public string? KmsIdList { get; set; }
 
         /// <summary>
-        /// API调用秘钥
+        /// API secret key
         /// </summary>
         public string? SecretKey { get; set; }
 
