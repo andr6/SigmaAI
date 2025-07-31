@@ -3,11 +3,11 @@
     public class DBConnectionOption
     {
         /// <summary>
-        /// sqlite连接字符串
+        /// SQLite connection string
         /// </summary>
         public string DbType { get; set; } = string.Empty;
         /// <summary>
-        /// pg链接字符串
+        /// PostgreSQL connection string
         /// </summary>
         public string ConnectionStrings { get; set; } = string.Empty;
     }

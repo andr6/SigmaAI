@@ -30,11 +30,11 @@ namespace Sigma.Components.Pages.AppPage
         protected IAIModels_Repositories _aimodels_Repositories { get; set; }
 
         [Inject]
-        protected FunctionService _functionService { get; set; }
+        protected FunctionService _functionService { get; set; } = default!;
 
         private Apps _appModel = new Apps();
 
-        private IEnumerable<string> kmsIds;
+        private IEnumerable<string> kmsIds = Enumerable.Empty<string>();
 
         private List<Kmss> _kmsList = new List<Kmss>();
 
@@ -46,8 +46,8 @@ namespace Sigma.Components.Pages.AppPage
 
         public Dictionary<string, string> _funList = new Dictionary<string, string>();
 
-        private List<AIModels> _chatList;
-        private List<AIModels> _embeddingList;
+        private List<AIModels> _chatList = new();
+        private List<AIModels> _embeddingList = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -67,7 +67,7 @@ namespace Sigma.Components.Pages.AppPage
 
             if (!string.IsNullOrEmpty(AppId))
             {
-                //查看
+                // View
                 _appModel = _apps_Repositories.GetFirst(p => p.Id == AppId);
                 kmsIds = _appModel.KmsIdList?.Split(",");
                 _pluginIds = _appModel.PluginList?.Split(",");
@@ -83,7 +83,7 @@ namespace Sigma.Components.Pages.AppPage
                 bool allSameEmbeddingModelID = kmsList.Select(k => k.EmbeddingModelID).Distinct().Count() == 1;
                 if (!allSameEmbeddingModelID)
                 {
-                    _ = Message.Error("同一个应用的知识库的Embedding模型必须相同！", 2);
+                    _ = Message.Error("Embedding models for knowledge bases in the same app must match!", 2);
                     return;
                 }
                 _appModel.KmsIdList = string.Join(",", kmsIds);
@@ -100,13 +100,13 @@ namespace Sigma.Components.Pages.AppPage
 
             if (string.IsNullOrEmpty(AppId))
             {
-                //新增
+                // Add new
                 _appModel.Id = Guid.NewGuid().ToString();
-                //秘钥
+                // Secret key
                 _appModel.SecretKey = "sk-" + Guid.NewGuid().ToString();
                 if (_apps_Repositories.IsAny(p => p.Name == _appModel.Name))
                 {
-                    _ = Message.Error("名称已存在！", 2);
+                    _ = Message.Error("Name already exists!", 2);
                     return;
                 }
 
@@ -114,7 +114,7 @@ namespace Sigma.Components.Pages.AppPage
             }
             else
             {
-                //修改
+                // Edit
                 _apps_Repositories.Update(_appModel);
             }
 

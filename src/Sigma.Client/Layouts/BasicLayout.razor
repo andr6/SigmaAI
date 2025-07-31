@@ -48,7 +48,7 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        //菜单权限控制
+        // menu permission control
         _menuData = await HttpClient.GetFromJsonAsync<MenuDataItem[]>("data/menu.json");
 
         LayoutService.OnSiderCollapsedChanged += OnSiderCollapsedChanged;

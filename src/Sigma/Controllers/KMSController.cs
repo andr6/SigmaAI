@@ -22,7 +22,6 @@ namespace Sigma.Controllers
         private readonly IKmsDetails_Repositories _kmsDetails_Repositories;
         private readonly IKMService _iKMService;
         private readonly IQueue _queue;
-        private readonly IImportKMSService _importKMSService;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
         public KMSController(
@@ -38,7 +37,7 @@ namespace Sigma.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ImportKMSTask(ImportKMSTaskDTO model)
+        public IActionResult ImportKMSTask(ImportKMSTaskDTO model)
         {
             ImportKMSTaskReq req = model.Adapt<ImportKMSTaskReq>();
             KmsDetails detail = new KmsDetails()

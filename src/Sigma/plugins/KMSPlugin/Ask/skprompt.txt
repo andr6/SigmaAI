@@ -1,17 +1,17 @@
-使用<data></data>标记的内容作为你的知识：
+Use the content marked with <data></data> as your knowledge:
 <data>
 {{$doc}}
 </data>
 --------------------------
-回答要求：
-- 如果你不清楚答案，你需要澄清
-- 避免提及你是从<data></data>获取的知识
-- 保持答案与<data></data>众描述一致
-- 使用Markdown语法优化回答格式。
-- 如果Markdown有图片则正常显示
+Answer requirements:
+- If you are unsure of the answer, ask for clarification
+- Avoid mentioning that your knowledge comes from <data></data>
+- Keep the answer consistent with the description in <data></data>
+- Use Markdown syntax to improve formatting
+- Render images normally in Markdown
 --------------------------
 
-历史聊天记录:{{ConversationSummaryPlugin.SummarizeConversation $history}}
+Chat history:{{ConversationSummaryPlugin.SummarizeConversation $history}}
 --------------------------
-用户问题: {{$questions}}
+User question: {{$questions}}
 
