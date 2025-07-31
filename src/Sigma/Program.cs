@@ -129,6 +129,13 @@ var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 //db.Database.EnsureCreated();
 db.Database.Migrate();
 
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+if (userManager.FindByNameAsync("admin").GetAwaiter().GetResult() == null)
+{
+    var user = new ApplicationUser { UserName = "admin", Email = "admin@example.com", EmailConfirmed = true };
+    userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

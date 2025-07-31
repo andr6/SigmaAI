@@ -25,7 +25,7 @@ namespace Sigma.Core.Domain.Service
         public Dictionary<string, (string Description, (Type ParameterType, string Description) ReturnType, (string ParameterName, Type ParameterType, string Description)[] Parameters)> MethodInfos => _methodInfos;
 
         /// <summary>
-        /// 查询程序集中的方法委托，后续利用Source Generators生成
+        /// Search delegates in assemblies. Later versions will use Source Generators.
         /// </summary>
         public void SearchMarkedMethods()
         {
@@ -36,14 +36,14 @@ namespace Sigma.Core.Domain.Service
 
             foreach (var assembly in _assemblies)
             {
-                // 从缓存中获取标记了ActionAttribute的方法
+                // retrieve methods marked with ActionAttribute from cache
                 foreach (var type in assembly.GetTypes())
                 {
                     markedMethods.AddRange(type.GetMethods().Where(m => m.GetCustomAttributes(typeof(SigmaFunctionAttribute), true).Length > 0));
                 }
             }
 
-            // 构建方法调用
+            // build method invocation map
             foreach (var method in markedMethods)
             {
                 var key = $"{method.DeclaringType.Assembly.GetName().Name}_{method.DeclaringType.Name}_{method.Name}";

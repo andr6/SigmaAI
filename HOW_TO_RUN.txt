@@ -1,4 +1,4 @@
-SigmaAI Launch Instructions
+IntelliLink Launch Instructions
 ===========================
 
 1. **Clone the repository**

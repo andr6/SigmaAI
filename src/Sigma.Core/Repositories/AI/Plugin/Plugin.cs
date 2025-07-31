@@ -9,7 +9,7 @@ namespace Sigma.Core.Repositories
     public partial class Plugin : EntityBase
     {
         /// <summary>
-        /// 接口名称
+        /// API name
         /// </summary>
         [Required]
         public string Name { get; set; }
@@ -18,19 +18,19 @@ namespace Sigma.Core.Repositories
         public PluginType Type { get; set; } = PluginType.OpenAPI;
 
         /// <summary>
-        /// 接口描述
+        /// API description
         /// </summary>
         [Required]
         public string Describe { get; set; }
 
         /// <summary>
-        /// 接口地址
+        /// API url
         /// </summary>
         [Required]
         public string Url { get; set; }
 
         /// <summary>
-        /// 请求方法
+        /// HTTP method
         /// </summary>
         public HttpMethodType Method { get; set; } = HttpMethodType.Get;
 
@@ -38,25 +38,25 @@ namespace Sigma.Core.Repositories
         public string? Header { get; set; }
 
         /// <summary>
-        /// QueryString参数
+        /// Query string parameters
         /// </summary>
         [Column(TypeName = "varchar(1000)")]
         public string? Query { get; set; }
 
         /// <summary>
-        /// jsonBody 实体
+        /// json body payload
         /// </summary>
         [Column(TypeName = "varchar(7000)")]
         public string? JsonBody { get; set; }
 
         /// <summary>
-        /// 入参提示词
+        /// input prompt
         /// </summary>
         [Column(TypeName = "varchar(1500)")]
         public string? InputPrompt { get; set; }
 
         /// <summary>
-        /// 返回提示词
+        /// output prompt
         /// </summary>
         [Column(TypeName = "varchar(1500)")]
         public string? OutputPrompt { get; set; }

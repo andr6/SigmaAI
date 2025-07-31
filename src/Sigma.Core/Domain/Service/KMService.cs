@@ -28,14 +28,14 @@ namespace Sigma.Core.Domain.Service
 
         public MemoryServerless GetMemoryByKMS(string kmsID, SearchClientConfig searchClientConfig = null)
         {
-            //获取KMS配置
+            // get KMS configuration
             var kms = _kmss_Repositories.GetFirst(p => p.Id == kmsID);
             var embedModel = _aIModels_Repositories.GetFirst(p => p.Id == kms.EmbeddingModelID);
             var chatModel = _aIModels_Repositories.GetFirst(p => p.Id == kms.ChatModelId);
             if (chatModel == null || embedModel == null)
                 return null;
 
-            //搜索配置
+            // search configuration
             if (searchClientConfig.IsNull())
             {
                 searchClientConfig = new SearchClientConfig
@@ -43,7 +43,7 @@ namespace Sigma.Core.Domain.Service
                     MaxAskPromptSize = 2048,
                     MaxMatchesCount = 3,
                     AnswerTokens = 1000,
-                    EmptyAnswer = "知识库未搜索到相关内容"
+                    EmptyAnswer = "No related content found in the knowledge base"
                 };
             }
 
@@ -57,9 +57,9 @@ namespace Sigma.Core.Domain.Service
             });
 
             WithTextGenerationByAIType(memoryBuild, chatModel);
-            //加载向量模型
+            // load embedding model
             WithTextEmbeddingGenerationByAIType(memoryBuild, embedModel);
-            //加载向量库
+            // load vector store
             WithMemoryDbByVectorDB(memoryBuild, _config);
 
             _memory = memoryBuild.Build<MemoryServerless>();

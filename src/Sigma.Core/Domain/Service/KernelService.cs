@@ -42,7 +42,7 @@ namespace Sigma.Core.Domain.Service
         }
 
         /// <summary>
-        /// 获取kernel实例，依赖注入不好按每个用户去Import不同的插件，所以每次new一个新的kernel
+        /// Get a kernel instance. Dependency injection cannot import different plugins per user, so create a new kernel each time.
         /// </summary>
         /// <param name="modelId"></param>
         /// <param name="apiKey"></param>
@@ -132,23 +132,23 @@ namespace Sigma.Core.Domain.Service
         }
 
         /// <summary>
-        /// 根据app配置的插件，导入插件
+        /// Import plugins based on the app configuration
         /// </summary>
         /// <param name="app"></param>
         /// <param name="_kernel"></param>
         public async Task ImportFunctionsByApp(Apps app, Kernel _kernel)
         {
-            //插件不能重复注册，否则会异常
+            // avoid registering plugins multiple times
             if (_kernel.Plugins.Any(p => p.Name == "SigmaFunctions"))
             {
                 return;
             }
             List<KernelFunction> pluginFunctions = new List<KernelFunction>();
 
-            //API插件
+            // API plugins
             if (!string.IsNullOrWhiteSpace(app.PluginList))
             {
-                //开启自动插件调用
+                // enable automatic plugin invocation
                 var plguinIdList = app.PluginList.Split(",");
                 var plguinList = _pluginRepository.GetList(p => plguinIdList.Contains(p.Id));
 
@@ -191,7 +191,7 @@ namespace Sigma.Core.Domain.Service
                                             request.AddHeader(headerArray[0], headerArray[1]);
                                         }
                                     }
-                                    //这里应该还要处理一次参数提取，等后面再迭代
+                                    // TODO: handle parameter extraction in a later iteration
                                     foreach (var query in plug.Query.ConvertToString().Split("\n"))
                                     {
                                         var queryArray = query.Split("=");
@@ -205,7 +205,7 @@ namespace Sigma.Core.Domain.Service
                                 }
                                 catch (System.Exception ex)
                                 {
-                                    return "调用失败：" + ex.Message;
+                                    return "Invocation failed: " + ex.Message;
                                 }
                             }, plug.Name, $"{plug.Describe}"));
                             break;
@@ -226,14 +226,14 @@ namespace Sigma.Core.Domain.Service
                                             request.AddHeader(headerArray[0], headerArray[1]);
                                         }
                                     }
-                                    //这里应该还要处理一次参数提取，等后面再迭代
+                                    // TODO: handle parameter extraction in a later iteration
                                     request.AddJsonBody(plug.JsonBody.ConvertToString());
                                     var result = client.Execute(request);
                                     return result.Content;
                                 }
                                 catch (System.Exception ex)
                                 {
-                                    return "调用失败：" + ex.Message;
+                                    return "Invocation failed: " + ex.Message;
                                 }
                             }, plug.Name, $"{plug.Describe}"));
                             break;
@@ -241,8 +241,8 @@ namespace Sigma.Core.Domain.Service
                 }
             }
 
-            //本地函数插件
-            if (!string.IsNullOrWhiteSpace(app.NativeFunctionList))//需要添加判断应用是否开启了本地函数插件
+            // local function plugins
+            if (!string.IsNullOrWhiteSpace(app.NativeFunctionList)) // need to check whether the app enabled local function plugins
             {
                 var nativeIdList = app.NativeFunctionList.Split(",");
 
@@ -264,7 +264,7 @@ namespace Sigma.Core.Domain.Service
         }
 
         /// <summary>
-        /// 注册默认插件
+        /// Register default plugins
         /// </summary>
         /// <param name="kernel"></param>
         private void RegisterPluginsWithKernel(Kernel kernel)
@@ -276,7 +276,7 @@ namespace Sigma.Core.Domain.Service
         }
 
         /// <summary>
-        /// 会话总结
+        /// Conversation summary
         /// </summary>
         /// <param name="_kernel"></param>
         /// <param name="questions"></param>
@@ -285,7 +285,7 @@ namespace Sigma.Core.Domain.Service
         public async Task<string> HistorySummarize(Kernel _kernel, string questions, string history)
         {
             KernelFunction sunFun = _kernel.Plugins.GetFunction("ConversationSummaryPlugin", "SummarizeConversation");
-            var summary = await _kernel.InvokeAsync(sunFun, new() { ["input"] = $"内容是：{history.ToString()} {Environment.NewLine} 请注意用中文总结" });
+            var summary = await _kernel.InvokeAsync(sunFun, new() { ["input"] = $"Content: {history.ToString()} {Environment.NewLine} Please summarize in Chinese" });
             string his = summary.GetValue<string>();
             var msg = $"history：{history.ToString()}{Environment.NewLine} user：{questions}"; ;
             return msg;
