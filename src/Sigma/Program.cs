@@ -20,6 +20,7 @@ using Sigma.Data;
 using Sigma.plugins.Functions;
 using Sigma.Services;
 using Sigma.Services.LLamaSharp;
+using Sigma;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
@@ -75,6 +76,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISecurityAssessmentService, SecurityAssessmentService>();
 
 builder.Services.AddQueue();
 
@@ -126,6 +128,13 @@ using var scope = app.Services.CreateScope();
 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 //db.Database.EnsureCreated();
 db.Database.Migrate();
+
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+if (userManager.FindByNameAsync("admin").GetAwaiter().GetResult() == null)
+{
+    var user = new ApplicationUser { UserName = "admin", Email = "admin@example.com", EmailConfirmed = true };
+    userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

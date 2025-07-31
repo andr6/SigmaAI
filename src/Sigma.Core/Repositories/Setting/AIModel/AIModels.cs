@@ -9,7 +9,7 @@ namespace Sigma.Core.Repositories
     public partial class AIModels : EntityBase
     {
         /// <summary>
-        /// AI类型
+        /// AI type
         /// </summary>
         [Required]
         public AIType AIType { get; set; } = AIType.OpenAI;
@@ -19,27 +19,27 @@ namespace Sigma.Core.Repositories
         public bool IsEmbedding { get; set; }
 
         /// <summary>
-        /// 模型地址
+        /// Model endpoint
         /// </summary>
         public string EndPoint { get; set; } = "";
 
         /// <summary>
-        /// 模型名称
+        /// Model name
         /// </summary>
         public string? ModelName { get; set; } = "";
 
         /// <summary>
-        /// 模型秘钥
+        /// Model key
         /// </summary>
         public string? ModelKey { get; set; } = "";
 
         /// <summary>
-        /// 部署名，azure需要使用
+        /// Deployment name (used for Azure)
         /// </summary>
         public string? ModelDescription { get; set; }
 
         /// <summary>
-        /// 启用意图识别
+        /// Enable intent recognition
         /// </summary>
         public bool UseIntentionRecognition { get; set; }
     }

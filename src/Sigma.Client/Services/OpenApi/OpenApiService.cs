@@ -98,7 +98,7 @@ namespace Sigma.Services.OpenApi
 
         private async Task SendChatStream(HttpContext HttpContext, OpenAIStreamResult result, Apps app, string questions, ChatHistory history)
         {
-            HttpContext.Response.Headers.Add("Content-Type", "text/event-stream");
+            HttpContext.Response.Headers.Append("Content-Type", "text/event-stream");
             var chatResult = _chatService.SendChatByAppAsync(app, questions, history);
             await foreach (var content in chatResult)
             {
@@ -170,7 +170,7 @@ namespace Sigma.Services.OpenApi
 
         private async Task SendKmsStream(HttpContext HttpContext, OpenAIStreamResult result, Apps app, string questions, ChatHistory history)
         {
-            HttpContext.Response.Headers.Add("Content-Type", "text/event-stream");
+            HttpContext.Response.Headers.Append("Content-Type", "text/event-stream");
             var chatResult = _chatService.SendKmsByAppAsync(app, questions, history);
             int i = 0;
             await foreach (var content in chatResult)

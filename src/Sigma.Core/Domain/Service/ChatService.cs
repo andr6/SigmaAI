@@ -47,7 +47,7 @@ namespace Sigma.Core.Domain.Service
         }
 
         /// <summary>
-        /// 发送消息
+        /// Send message
         /// </summary>
         /// <param name="app"></param>
         /// <param name="questions"></param>
@@ -56,11 +56,11 @@ namespace Sigma.Core.Domain.Service
         public async IAsyncEnumerable<StreamingKernelContent> SendChatByAppAsync(Apps app, string questions, ChatHistory history)
         {
             var _kernel = _kernelService.GetKernelByApp(app);
-            var temperature = app.Temperature / 100;//存的是0~100需要缩小
+            var temperature = app.Temperature / 100; // value is 0-100 so scale down
             OpenAIPromptExecutionSettings settings = new() { Temperature = temperature };
             var useIntentionRecognition = app.AIModel?.UseIntentionRecognition == true;
 
-            if (!string.IsNullOrEmpty(app.PluginList) || !string.IsNullOrEmpty(app.NativeFunctionList))//这里还需要加上本地插件的
+            if (!string.IsNullOrEmpty(app.PluginList) || !string.IsNullOrEmpty(app.NativeFunctionList)) // need to include local plugins
             {
                 await _kernelService.ImportFunctionsByApp(app, _kernel);
                 settings.ToolCallBehavior = ToolCallBehavior.AutoInvokeKernelFunctions;
@@ -68,7 +68,7 @@ namespace Sigma.Core.Domain.Service
 
             if (string.IsNullOrEmpty(app.Prompt) || !app.Prompt.Contains("{{$input}}"))
             {
-                //如果模板为空，给默认提示词
+                // use default prompt if template is empty
                 app.Prompt = app.Prompt?.ConvertToString() + "{{$input}}";
             }
 
@@ -170,25 +170,25 @@ namespace Sigma.Core.Domain.Service
                         var arguments = new KernelArguments(JsonParameterParser.ParseJsonToDictionary(functioResult.Arguments, parameters));
 
                         var funcResult = (await function.InvokeAsync(_kernel, arguments)).GetValue<object>() ?? string.Empty;
-                        callResult.Add($"- {functioResult.Reason}，结果是：{JsonSerializer.Serialize(funcResult, JsonSerializerOptions)}");
+                        callResult.Add($"- {functioResult.Reason}, result: {JsonSerializer.Serialize(funcResult, JsonSerializerOptions)}");
                     }
                 }
                 catch (Exception e)
                 {
-                    callResult.Add($"调用函数时发生异常：{e.Message}");
+                    callResult.Add($"Function invocation threw an exception: {e.Message}");
                 }
 
                 history = new ChatHistory($"""
-                    system: 你能通过用户意图和反馈结果总结回复。
+                    system: Summarize the response based on user intent and the following results.
 
-                    已知意图和结果：
+                    Known intents and results:
 
-                    {string.Join("\r\n\r\n", callResult)}。
+                    {string.Join("\r\n\r\n", callResult)}.
 
-                    请结合用户最后的问题作答：
+                    Please answer the user's last question using this information:
                     """);
 
-                //questions = "请将这个结果重新组织语言";
+                //questions = "Please reword this result";
                 prompt = "{{$input}}";
                 useIntentionRecognition = false;
 
@@ -220,7 +220,7 @@ namespace Sigma.Core.Domain.Service
             }
             else
             {
-                yield return new StreamingTextContent("知识库未搜索到相关内容");
+                yield return new StreamingTextContent("No related content found in the knowledge base");
             }
         }
 
@@ -232,35 +232,35 @@ namespace Sigma.Core.Domain.Service
                 return "";
 
             var functionNames = functions.Select(x => x.Description).ToList();
-            var functionKV = functions.ToDictionary(x => x.Description, x => new { Function = $"{x.Name}", Parameters = x.Parameters.Select(x => $"{x.Name}:{TypeParser.ConvertToTypeScriptType(x.ParameterType!)} // {x.Description},{(TypeParser.IsArrayOrList(x.ParameterType!) ? "多选" : "单选")}") });
+            var functionKV = functions.ToDictionary(x => x.Description, x => new { Function = $"{x.Name}", Parameters = x.Parameters.Select(x => $"{x.Name}:{TypeParser.ConvertToTypeScriptType(x.ParameterType!)} // {x.Description},{(TypeParser.IsArrayOrList(x.ParameterType!) ? "multiple" : "single")}") });
             var template = $$"""
-                          请对用户的最后一个提问完成意图识别任务。
+                          Perform intent recognition for the user's last question.
 
-                          已知的意图有
+                          Known intents are
 
                           {{JsonSerializer.Serialize(functionNames, JsonSerializerOptions)}}
 
-                          分别对应的函数如下：
+                          The corresponding functions are:
 
                           {{JsonSerializer.Serialize(functionKV, JsonSerializerOptions)}}
 
-                          从已知的意图中识别出一个或多个意图，并直接给出以下json格式的对象，不要输出 markdown 及其他多余文字。
+                          Identify one or more intents from the list and output only the JSON object below without markdown or extra text.
 
-                          输出格式如下：
+                          Output format:
 
                           [{
-                             "function": string   // 意图对应的function
-                             "intention": string  // 用户的意图
-                             "arguments": object  // 参数值
-                             "reason": string     // 取这个参数值的原因
+                             "function": string   // function name for the intent
+                             "intention": string  // user intent
+                             "arguments": object  // argument values
+                             "reason": string     // reason for using these values
                           },{
-                             "function": string   // 意图对应的function
-                             "intention": string  // 用户的意图
-                             "arguments": object  // 参数值
-                             "reason": string     // 取这个参数值的原因
+                             "function": string   // function name for the intent
+                             "intention": string  // user intent
+                             "arguments": object  // argument values
+                             "reason": string     // reason for using these values
                           }]
 
-                          如果用户意图无法识别，则直接回答用户的问题，只输出markdown，不要有其他多余文字。
+                          If the user's intent cannot be identified, answer the question directly in markdown without any extra text.
                           """;
 
             return template;

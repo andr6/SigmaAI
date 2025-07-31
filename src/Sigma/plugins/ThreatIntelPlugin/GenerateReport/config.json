@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "description": "Generate cyber threat intelligence report from CVE data",
+  "execution_settings": {
+    "default": {
+      "temperature": 0.3,
+      "top_p": 0.8
+    }
+  }
+}

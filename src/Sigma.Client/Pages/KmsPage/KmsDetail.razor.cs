@@ -56,13 +56,13 @@ namespace Sigma.Components.Pages.KmsPage
 
         private MemoryServerless _memory { get; set; }
         [Inject]
-        protected IKMService iKMService { get; set; }
+        protected IKMService iKMService { get; set; } = default!;
         [Inject]
         protected MessageService? _message { get; set; }
         //[Inject]
         //protected BackgroundTaskBroker<ImportKMSTaskReq> _taskBroker { get; set; }
         [Inject]
-        protected IHttpService _httpService { get; set; }
+        protected IHttpService _httpService { get; set; } = default!;
 
 
         protected override async Task OnInitializedAsync()

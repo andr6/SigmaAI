@@ -29,15 +29,14 @@ namespace Sigma.Components.Pages.Setting.AIModel
         private string _downloadUrl;
         private bool _downloadModalVisible;
         private double _downloadProgress;
-        private bool _downloadFinished;
         private bool _downloadStarted;
         IDownload _download;
 
         private Modal _modal;
 
-        string[] _modelFiles;
+        string[] _modelFiles = Array.Empty<string>();
 
-        IEnumerable<string> _menuKeys;
+        IEnumerable<string> _menuKeys = Array.Empty<string>();
 
         private List<MenuDataItem> menuList = new List<MenuDataItem>();
 
@@ -142,7 +141,6 @@ namespace Sigma.Components.Pages.Setting.AIModel
 
         private void DownloadFileCompleted(object? sender, AsyncCompletedEventArgs e)
         {
-            _downloadFinished = true;
             _aiModel.ModelName = _download.Package.FileName;
             _downloadModalVisible = false;
             _downloadStarted = false;

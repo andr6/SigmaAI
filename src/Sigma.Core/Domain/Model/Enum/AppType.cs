@@ -10,10 +10,10 @@ namespace Sigma.Core.Domain.Model.Enum
 {
     public enum AppType
     {
-        [Display(Name ="会话应用")]
+        [Display(Name = "Chat Application")]
         Chat = 1,
 
-        [Display(Name = "知识库")]
+        [Display(Name = "Knowledge Base")]
         Kms = 2
     }
 }
