@@ -3,23 +3,23 @@
 namespace Sigma.Core.Domain.Model.Enum
 {
     /// <summary>
-    /// AI类型
+    /// AI type
     /// </summary>
     public enum AIType
     {
-        [Display(Name = "Open AI 协议")]
+        [Display(Name = "Open AI Compatible")]
         OpenAI = 1,
 
         [Display(Name = "Azure Open AI")]
         AzureOpenAI = 2,
 
-        [Display(Name = "LLama本地模型")]
+        [Display(Name = "LLama Local Model")]
         LLamaSharp = 3,
 
-        [Display(Name = "星火大模型")]
+        [Display(Name = "SparkDesk Model")]
         SparkDesk = 4,
 
-        [Display(Name = "灵积大模型")]
+        [Display(Name = "DashScope Model")]
         DashScope = 5,
 
         [Display(Name = "Ollama")]
@@ -31,12 +31,12 @@ namespace Sigma.Core.Domain.Model.Enum
         [Display(Name = "Google Gemini")]
         Gemini = 8,
 
-        [Display(Name = "模拟输出")]
+        [Display(Name = "Mock Output")]
         Mock = 100,
     }
 
     /// <summary>
-    /// 模型类型
+    /// Model type
     /// </summary>
     public enum AIModelType
     {

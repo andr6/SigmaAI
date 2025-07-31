@@ -10,29 +10,29 @@ namespace Sigma.Core.Repositories
         public string KmsId { get; set; }
 
         /// <summary>
-        /// 文件名称
+        /// File name
         /// </summary>
         public string FileName { get; set; } = "";
 
         public string FileGuidName { get; set; } = "";
 
         /// <summary>
-        /// 地址
+        /// Url
         /// </summary>
         public string Url { get; set; } = "";
 
         /// <summary>
-        /// 类型 file，url
+        /// Type file or url
         /// </summary>
         public string Type { get; set; }
 
         /// <summary>
-        /// 数据数量
+        /// Data count
         /// </summary>
         public int? DataCount { get; set; }
 
         /// <summary>
-        /// 状态
+        /// Status
         /// </summary>
         public ImportKmsStatus? Status { get; set; } = ImportKmsStatus.Loadding;
     }

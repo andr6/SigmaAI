@@ -8,31 +8,31 @@ namespace Sigma.Core.Repositories
     public partial class Users : EntityBase
     {
         /// <summary>
-        /// 工号，用于登陆
+        /// Employee number used for login
         /// </summary>
         [Required]
         public string No { get; set; }
 
         /// <summary>
-        /// 密码
+        /// Password
         /// </summary>
         [Required]
         public string Password { get; set; }
 
         /// <summary>
-        /// 名称
+        /// Name
         /// </summary>
         [Required]
         public string Name { get; set; }
 
         /// <summary>
-        /// 备注
+        /// Notes
         /// </summary>
         [Required]
         public string Describe { get; set; }
 
         /// <summary>
-        /// 菜单权限
+        /// Menu permissions
         /// </summary>
         [Required]
         public string MenuRole { get; set; }

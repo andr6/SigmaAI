@@ -1,8 +1,8 @@
-# Sigma AI Platform
+# IntelliLink AI Platform
 
 ![Build](https://img.shields.io/github/actions/workflow/status/ElderJames/SigmaAI/dotnet.yml?style=flat-square)
 
-Sigma AI is an extensible enterprise platform combining large language models (LLMs) with a plugin driven .NET 8 application.  The core goal is to expose advanced AI capabilities as easily consumable APIs so existing business systems can become intelligence enabled.
+IntelliLink is an extensible enterprise platform combining large language models (LLMs) with a plugin driven .NET 8 application.  The core goal is to expose advanced AI capabilities as easily consumable APIs so existing business systems can become intelligence enabled.
 
 ## Features
 
@@ -70,4 +70,4 @@ Navigate to the printed URL to access the web interface.
 
 ## License
 
-Sigma AI is released under the Apache 2.0 license.
+IntelliLink is released under the Apache 2.0 license.

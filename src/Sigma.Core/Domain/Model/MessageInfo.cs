@@ -7,7 +7,7 @@
         public string HtmlAnswers { get; set; } = "";
 
         /// <summary>
-        /// 发送是true  接收是false
+        /// True when sent, false when received
         /// </summary>
         public bool IsSend { get; set; } = false;
         public DateTime CreateTime { get; set; }
