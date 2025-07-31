@@ -30,10 +30,7 @@ namespace Sigma.Core.Domain.Model.Enum
 
         [Display(Name = "Google Gemini")]
         Gemini = 8,
-
-        [Display(Name = "Mock Output")]
-        Mock = 100,
-    }
+     }
 
     /// <summary>
     /// Model type
