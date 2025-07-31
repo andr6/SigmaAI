@@ -11,7 +11,7 @@ namespace Sigma.Core.Utils
             {
                 string requestBody = await request.Content.ReadAsStringAsync();
                 //便于调试查看请求prompt
-                logger.LogInformation("Request Url:@url RequestBody: @requestBody", new { url = request.RequestUri, requestBody });
+                logger.LogInformation("Request Url:{Url} RequestBody: {RequestBody}", request.RequestUri, requestBody);
             }
 
             request.RequestUri = new Uri(new Uri(endPoint), request.RequestUri?.PathAndQuery);
@@ -23,7 +23,7 @@ namespace Sigma.Core.Utils
             {
                 string requestBody = await response.Content.ReadAsStringAsync();
                 //便于调试查看请求prompt
-                logger.LogInformation(requestBody);
+                logger.LogInformation("Response Body: {ResponseBody}", requestBody);
             }
 
             return response;
@@ -38,7 +38,7 @@ namespace Sigma.Core.Utils
             {
                 string requestBody = await request.Content.ReadAsStringAsync();
                 //便于调试查看请求prompt
-                logger.LogInformation("Request Url:@url RequestBody: @requestBody", new { url = request.RequestUri, requestBody });
+                logger.LogInformation("Request Url:{Url} RequestBody: {RequestBody}", request.RequestUri, requestBody);
             }
 
             request.RequestUri = new Uri(new Uri(endPoint), request.RequestUri?.PathAndQuery.Replace("/v1/", "/api/"));
@@ -50,7 +50,7 @@ namespace Sigma.Core.Utils
             {
                 string requestBody = await response.Content.ReadAsStringAsync();
                 //便于调试查看请求prompt
-                logger.LogInformation(requestBody);
+                logger.LogInformation("Response Body: {ResponseBody}", requestBody);
             }
 
             return response;
