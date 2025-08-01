@@ -1,12 +1,13 @@
 ﻿using Sigma.Core.Domain.Model.Dto.OpenAPI;
 using Sigma.Services.LLamaSharp;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Sigma.Controllers
 {
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = true)]
-    public class LLamaSharpController(ILLamaSharpService _lLamaSharpService) : ControllerBase
+    public class LLamaSharpController(ILLamaSharpService _lLamaSharpService, ILogger<LLamaSharpController> _logger) : ControllerBase
     {
         /// <summary>
         /// 本地会话接口
@@ -16,7 +17,7 @@ namespace Sigma.Controllers
         [Route("llama/v1/chat/completions")]
         public async Task chat(OpenAIModel model)
         {
-            Console.WriteLine("开始：llama/v1/chat/completions");
+            _logger.LogInformation("开始：llama/v1/chat/completions");
             if (model.stream)
             {
                 await _lLamaSharpService.ChatStream(model, HttpContext);
@@ -25,7 +26,7 @@ namespace Sigma.Controllers
             {
                 await _lLamaSharpService.Chat(model, HttpContext);
             }
-            Console.WriteLine("结束：llama/v1/chat/completions");
+            _logger.LogInformation("结束：llama/v1/chat/completions");
         }
 
         /// <summary>
@@ -37,9 +38,9 @@ namespace Sigma.Controllers
         [Route("llama/v1/embeddings")]
         public async Task embedding(OpenAIEmbeddingModel model)
         {
-            Console.WriteLine("开始：llama/v1/embeddings");
+            _logger.LogInformation("开始：llama/v1/embeddings");
             await _lLamaSharpService.Embedding(model, HttpContext);
-            Console.WriteLine("结束：llama/v1/embeddings");
+            _logger.LogInformation("结束：llama/v1/embeddings");
 
         }
     }
