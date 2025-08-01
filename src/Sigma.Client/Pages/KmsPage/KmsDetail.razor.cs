@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.KernelMemory;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Logging;
 
 namespace Sigma.Components.Pages.KmsPage
 {
@@ -63,6 +64,8 @@ namespace Sigma.Components.Pages.KmsPage
         //protected BackgroundTaskBroker<ImportKMSTaskReq> _taskBroker { get; set; }
         [Inject]
         protected IHttpService _httpService { get; set; } = default!;
+        [Inject]
+        private ILogger<KmsDetail> Logger { get; set; }
 
 
         protected override async Task OnInitializedAsync()
@@ -108,7 +111,7 @@ namespace Sigma.Components.Pages.KmsPage
             }
             catch (System.Exception ex)
             {
-                Console.WriteLine(ex.Message + " ---- " + ex.StackTrace);
+                Logger.LogError(ex, ex.Message);
             }
         }
         private void UrlHandleCancel(MouseEventArgs e)
@@ -146,7 +149,7 @@ namespace Sigma.Components.Pages.KmsPage
             }
             catch (System.Exception ex)
             {
-                Console.WriteLine(ex.Message + " ---- " + ex.StackTrace);
+                Logger.LogError(ex, ex.Message);
             }
         }
         private void TextHandleCancel(MouseEventArgs e)
@@ -184,7 +187,7 @@ namespace Sigma.Components.Pages.KmsPage
             }
             catch (System.Exception ex)
             {
-                Console.WriteLine(ex.Message + " ---- " + ex.StackTrace);
+                Logger.LogError(ex, ex.Message);
             }
         }
         private void FileHandleCancel(MouseEventArgs e)
@@ -260,7 +263,7 @@ namespace Sigma.Components.Pages.KmsPage
             }
             catch (System.Exception ex)
             {
-                Console.WriteLine(ex.Message + " ---- " + ex.StackTrace);
+                Logger.LogError(ex, ex.Message);
             }
             finally
             {
