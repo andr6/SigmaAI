@@ -219,12 +219,10 @@ namespace Sigma.Components.Pages.ChatPage
             }
         }
 
-        protected async Task OnCopyAsync(ChatHistory item)
+        protected Task OnCopyAsync(ChatHistory item)
         {
-            await Task.Run(() =>
-            {
-                _messageInput = item.Content;
-            });
+            _messageInput = item.Content;
+            return Task.CompletedTask;
         }
 
         protected async Task OnClearAsync()
