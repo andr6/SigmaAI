@@ -17,6 +17,8 @@ using Microsoft.SemanticKernel.Plugins.OpenApi;
 using Sigma.Core.Repositories.AI.Plugin;
 using Microsoft.SemanticKernel.ChatCompletion;
 using LLamaSharp.SemanticKernel.ChatCompletion;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace Sigma.Core.Domain.Service
 {
@@ -186,14 +188,20 @@ namespace Sigma.Core.Domain.Service
                                             request.AddHeader(headerArray[0], headerArray[1]);
                                         }
                                     }
-                                    // TODO: handle parameter extraction in a later iteration
-                                    foreach (var query in plug.Query.ConvertToString().Split("\n"))
+                                    var queryLines = plug.Query.ConvertToString().Split('\n', StringSplitOptions.RemoveEmptyEntries);
+                                    foreach (var query in queryLines)
                                     {
-                                        var queryArray = query.Split("=");
-                                        if (queryArray.Length == 2)
-                                        {
-                                            request.AddQueryParameter(queryArray[0], queryArray[1]);
-                                        }
+                                        var queryArray = query.Split('=', 2);
+                                        if (queryArray.Length != 2)
+                                            continue;
+
+                                        var key = queryArray[0].Trim();
+                                        var value = queryArray[1].Trim().Replace("{msg}", msg);
+
+                                        if (!Regex.IsMatch(key, @"^[A-Za-z0-9_-]+$"))
+                                            continue;
+
+                                        request.AddQueryParameter(key, value);
                                     }
                                     var result = client.Execute(request);
                                     return result.Content;
@@ -221,8 +229,20 @@ namespace Sigma.Core.Domain.Service
                                             request.AddHeader(headerArray[0], headerArray[1]);
                                         }
                                     }
-                                    // TODO: handle parameter extraction in a later iteration
-                                    request.AddJsonBody(plug.JsonBody.ConvertToString());
+                                    var bodyTemplate = plug.JsonBody.ConvertToString();
+                                    if (!string.IsNullOrWhiteSpace(bodyTemplate))
+                                    {
+                                        var replaced = bodyTemplate.Replace("{msg}", msg);
+                                        try
+                                        {
+                                            var obj = JsonSerializer.Deserialize<object>(replaced);
+                                            request.AddJsonBody(obj);
+                                        }
+                                        catch (JsonException)
+                                        {
+                                            request.AddStringBody(replaced, DataFormat.Json);
+                                        }
+                                    }
                                     var result = client.Execute(request);
                                     return result.Content;
                                 }
