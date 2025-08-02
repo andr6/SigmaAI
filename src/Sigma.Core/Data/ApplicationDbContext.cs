@@ -28,6 +28,8 @@ namespace Sigma.Data
 
         public DbSet<ChatHistory> ChatHistories { get; set; }
 
+        public DbSet<Sigma.Core.Repositories.ThreatIntel.MitreMapping> MitreMappings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Plugin>().HasQueryFilter(x => !x.IsDeleted);
@@ -38,6 +40,7 @@ namespace Sigma.Data
             builder.Entity<Users>().HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<Chat>().HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<ChatHistory>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<Sigma.Core.Repositories.ThreatIntel.MitreMapping>().HasQueryFilter(x => !x.IsDeleted);
 
             base.OnModelCreating(builder);
         }

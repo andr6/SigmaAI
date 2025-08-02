@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "description": "Run an Atomic Red Team test and return the output",
+  "execution_settings": {
+    "default": {
+      "temperature": 0.2,
+      "top_p": 0.8
+    }
+  }
+}

@@ -1,0 +1,18 @@
+image:
+  repository: your-repo/frontend
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3000
+
+env:
+  NEXT_PUBLIC_API_URL: "http://backend:8000"
+
+secrets:
+  API_KEY: ""
+
+storage:
+  enabled: false
+  size: 1Gi

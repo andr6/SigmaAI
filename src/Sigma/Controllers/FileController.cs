@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Sigma;
 
 namespace Sigma.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
-    [ApiExplorerSettings(IgnoreApi =true)]
-    public class FileController : ControllerBase
-    {
+[Route("api/[controller]/[action]")]
+[ApiController]
+[ApiExplorerSettings(IgnoreApi =true)]
+[Authorize(Roles = RoleConstants.Admin)]
+public class FileController : ControllerBase
+{
         /// <summary>
         /// Upload FileName
         /// </summary>

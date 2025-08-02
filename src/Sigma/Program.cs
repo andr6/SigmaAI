@@ -45,6 +45,13 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(PolicyConstants.RequireAdmin, policy => policy.RequireRole(RoleConstants.Admin));
+    options.AddPolicy(PolicyConstants.RequireUser, policy => policy.RequireRole(RoleConstants.User, RoleConstants.Admin));
+});
 
 builder.Services.AddScoped(sp => new HttpClient
 {
@@ -58,6 +65,7 @@ builder.Services.AddScoped<FunctionTest>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<IModelMetricsService, ModelMetricsService>();
 builder.Services.AddScoped<BackgroundJobService>();
+builder.Services.AddSingleton<SimulationService>();
 builder.Services.AddScoped<IHttpService, HttpService>();
 builder.Services.AddScoped<IImportKMSService, ImportKMSService>();
 builder.Services.AddScoped<IKernelService, KernelService>();
@@ -78,6 +86,7 @@ builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISecurityAssessmentService, SecurityAssessmentService>();
+builder.Services.AddScoped<MitreMappingService>();
 
 builder.Services.AddQueue();
 
@@ -185,3 +194,22 @@ app.MapRazorComponents<Sigma.Client.App>()
 app.MapAdditionalIdentityEndpoints();
 
 app.Run();
+
+
+namespace Sigma;
+
+public static class RoleConstants
+{
+    public const string Admin = "SigmaAdmin";
+    public const string User = "SigmaUser";
+}
+
+public static class PolicyConstants
+{
+    public const string RequireAdmin = "RequireAdmin";
+    public const string RequireUser = "RequireUser";
+}
+
+app.MapControllers();
+
+

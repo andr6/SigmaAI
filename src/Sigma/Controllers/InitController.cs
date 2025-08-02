@@ -1,11 +1,14 @@
-﻿using Sigma.Core.Repositories;
+using Sigma.Core.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sigma;
 
 namespace Sigma.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = true)]
+    [Authorize(Roles = RoleConstants.Admin)]
     public class InitController : ControllerBase
     {
         private readonly IApps_Repositories _repository;
