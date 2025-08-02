@@ -5,6 +5,7 @@ from typing import List
 from .models import Indicator
 from .ingest import fetch_otx, fetch_shodan, fetch_censys, fetch_virustotal
 from .llm import summarize_iocs
+from .graph_db import write_indicator
 
 DATABASE_URL = "sqlite:///./ioc.db"
 engine = create_engine(DATABASE_URL, echo=False)
@@ -32,6 +33,7 @@ def ingest_iocs(session: Session = Depends(get_session)):
         iocs.extend(fetch_virustotal(ip))
     for ioc in iocs:
         session.add(ioc)
+        write_indicator(ioc)
     session.commit()
     return iocs
 
