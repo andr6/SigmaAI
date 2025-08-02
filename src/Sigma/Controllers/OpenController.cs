@@ -1,7 +1,9 @@
-﻿using Sigma.Core.Domain.Model.Dto.OpenAPI;
+using Sigma.Core.Domain.Model.Dto.OpenAPI;
 using Sigma.Core.Utils;
 using Sigma.Services.OpenApi;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Sigma;
 
 namespace Sigma.Controllers
 {
@@ -11,6 +13,7 @@ namespace Sigma.Controllers
     /// </summary>
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = true)]
+    [Authorize(Roles = $"{RoleConstants.Admin},{RoleConstants.User}")]
     public class OpenController(IOpenApiService _openApiService) : ControllerBase
     {
         /// <summary>
