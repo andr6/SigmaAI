@@ -10,6 +10,8 @@ namespace Sigma.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, AuditInterceptor auditInterceptor) : IdentityDbContext<ApplicationUser>(options)
     {
+        public int TenantId { get; set; }
+
         public DbSet<Plugin> Plugins { get; set; }
 
         public DbSet<Apps> Apps { get; set; }
@@ -32,6 +34,7 @@ namespace Sigma.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
             builder.Entity<Plugin>().HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<Apps>().HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<Kmss>().HasQueryFilter(x => !x.IsDeleted);
@@ -41,6 +44,7 @@ namespace Sigma.Data
             builder.Entity<Chat>().HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<ChatHistory>().HasQueryFilter(x => !x.IsDeleted);
             builder.Entity<Sigma.Core.Repositories.ThreatIntel.MitreMapping>().HasQueryFilter(x => !x.IsDeleted);
+
 
             base.OnModelCreating(builder);
         }

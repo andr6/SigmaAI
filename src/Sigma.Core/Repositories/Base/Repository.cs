@@ -1,16 +1,19 @@
 ﻿using Sigma.Core.Repositories.Base;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Linq.Expressions;
+using Sigma.Data;
 
 namespace Sigma.Core.Repositories.Base
 {
     public class Repository<T> : IRepository<T> where T : EntityBase
     {
-        private DbContext _db;
+        private readonly ApplicationDbContext _db;
 
-        public Repository(DbContext db)
+        public Repository(ApplicationDbContext db)
         {
             _db = db;
         }
@@ -69,12 +72,12 @@ namespace Sigma.Core.Repositories.Base
 
         public T? GetById(int id)
         {
-            return _db.Set<T>().Find(id);
+            return _db.Set<T>().FirstOrDefault(x => x.Id == id.ToString());
         }
 
         public async Task<T?> GetByIdAsync(int id)
         {
-            return await _db.Set<T>().FindAsync(id);
+            return await _db.Set<T>().FirstOrDefaultAsync(x => x.Id == id.ToString());
         }
 
         public T? GetFirst(Expression<Func<T, bool>> whereExpression)
@@ -89,7 +92,7 @@ namespace Sigma.Core.Repositories.Base
 
         public async Task<T?> GetFirstAsync(string id)
         {
-            return await _db.Set<T>().FindAsync(id);
+            return await _db.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public List<T> GetList()
@@ -115,6 +118,7 @@ namespace Sigma.Core.Repositories.Base
         public bool Insert(T obj)
         {
             obj.Id ??= Guid.NewGuid().ToString();
+            obj.TenantId = _db.TenantId;
             _db.Set<T>().Add(obj);
             return _db.SaveChanges() > 0;
         }
