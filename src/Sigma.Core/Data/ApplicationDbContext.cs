@@ -10,6 +10,8 @@ namespace Sigma.Data
 {
     public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, AuditInterceptor auditInterceptor) : IdentityDbContext<ApplicationUser>(options)
     {
+        public int TenantId { get; set; }
+
         public DbSet<Plugin> Plugins { get; set; }
 
         public DbSet<Apps> Apps { get; set; }
@@ -30,14 +32,14 @@ namespace Sigma.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Plugin>().HasQueryFilter(x => !x.IsDeleted);
-            builder.Entity<Apps>().HasQueryFilter(x => !x.IsDeleted);
-            builder.Entity<Kmss>().HasQueryFilter(x => !x.IsDeleted);
-            builder.Entity<KmsDetails>().HasQueryFilter(x => !x.IsDeleted);
-            builder.Entity<AIModels>().HasQueryFilter(x => !x.IsDeleted);
-            builder.Entity<Users>().HasQueryFilter(x => !x.IsDeleted);
-            builder.Entity<Chat>().HasQueryFilter(x => !x.IsDeleted);
-            builder.Entity<ChatHistory>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<Plugin>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
+            builder.Entity<Apps>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
+            builder.Entity<Kmss>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
+            builder.Entity<KmsDetails>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
+            builder.Entity<AIModels>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
+            builder.Entity<Users>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
+            builder.Entity<Chat>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
+            builder.Entity<ChatHistory>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
 
             base.OnModelCreating(builder);
         }
