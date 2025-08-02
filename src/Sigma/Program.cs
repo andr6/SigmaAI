@@ -23,6 +23,7 @@ using Sigma.Services.LLamaSharp;
 using Sigma;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -116,6 +117,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.Configure<DBConnectionOption>(builder.Configuration.GetSection("DBConnection"));
 builder.Services.Configure<LoginOption>(builder.Configuration.GetSection("Login"));
 builder.Services.Configure<LLamaSharpOption>(builder.Configuration.GetSection("LLamaSharp"));
+builder.Services.Configure<PrometheusConfig>(builder.Configuration.GetSection("PrometheusConfig"));
 
 var llamaOptions = builder.Configuration.GetSection("LLamaSharp").Get<LLamaSharpOption>() ?? new();
 if (llamaOptions.RunType.ToUpper() == "CPU")
@@ -128,6 +130,13 @@ else if (llamaOptions.RunType.ToUpper() == "GPU")
 }
 
 var app = builder.Build();
+
+var prometheusConfig = builder.Configuration.GetSection("PrometheusConfig").Get<PrometheusConfig>() ?? new();
+if (prometheusConfig.Enabled)
+{
+    app.UseMetricServer(prometheusConfig.MetricsEndpoint);
+    app.UseHttpMetrics();
+}
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
@@ -186,6 +195,7 @@ app.MapAdditionalIdentityEndpoints();
 
 app.Run();
 
+
 namespace Sigma;
 
 public static class RoleConstants
@@ -202,4 +212,4 @@ public static class PolicyConstants
 
 app.MapControllers();
 
-app.Run();
+

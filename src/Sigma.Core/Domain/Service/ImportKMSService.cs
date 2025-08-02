@@ -3,6 +3,8 @@ using Sigma.Core.Domain.Model;
 using Sigma.Core.Repositories;
 using Microsoft.KernelMemory;
 using Microsoft.Extensions.Logging;
+using Prometheus;
+using System.Diagnostics;
 
 namespace Sigma.Core.Domain.Service
 {
@@ -13,8 +15,16 @@ namespace Sigma.Core.Domain.Service
         ILogger<ImportKMSService> logger
         ) : IImportKMSService
     {
+        private static readonly Counter ImportCounter = Metrics.CreateCounter(
+            "kms_import_total", "Total KMS import tasks", new CounterConfiguration { LabelNames = ["status"] });
+
+        private static readonly Histogram ImportDuration = Metrics.CreateHistogram(
+            "kms_import_duration_seconds", "Duration of KMS import tasks", new HistogramConfiguration { LabelNames = ["status"] });
+
         public async Task ImportKMSTask(ImportKMSTaskReq req)
         {
+            var status = "success";
+            var sw = Stopwatch.StartNew();
             try
             {
                 var km = _kmss_Repositories.GetFirst(p => p.Id == req.KmsId);
@@ -65,10 +75,17 @@ namespace Sigma.Core.Domain.Service
             }
             catch (Exception ex)
             {
+                status = "fail";
                 req.KmsDetail.Status = Model.Enum.ImportKmsStatus.Fail;
                 _kmsDetails_Repositories.Update(req.KmsDetail);
                 logger.LogError(ex, "An exception waas thrown.");
                 throw;
+            }
+            finally
+            {
+                sw.Stop();
+                ImportCounter.WithLabels(status).Inc();
+                ImportDuration.WithLabels(status).Observe(sw.Elapsed.TotalSeconds);
             }
         }
     }
