@@ -1,0 +1,6 @@
+Create a STIX 2.1 bundle containing the following indicators of compromise.
+Return the bundle as JSON.
+
+Indicators:
+{{$iocs}}
+

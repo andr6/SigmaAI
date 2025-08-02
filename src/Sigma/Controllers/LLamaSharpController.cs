@@ -1,12 +1,15 @@
-﻿using Sigma.Core.Domain.Model.Dto.OpenAPI;
+using Sigma.Core.Domain.Model.Dto.OpenAPI;
 using Sigma.Services.LLamaSharp;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Sigma;
 
 namespace Sigma.Controllers
 {
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = true)]
+    [Authorize(Roles = RoleConstants.Admin)]
     public class LLamaSharpController(ILLamaSharpService _lLamaSharpService, ILogger<LLamaSharpController> _logger) : ControllerBase
     {
         /// <summary>

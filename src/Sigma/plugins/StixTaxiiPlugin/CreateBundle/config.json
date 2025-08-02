@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "description": "Generate a STIX bundle from IOC data for TAXII export",
+  "execution_settings": {
+    "default": {
+      "temperature": 0.0,
+      "top_p": 0.0
+    }
+  }
+}
+

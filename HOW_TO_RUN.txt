@@ -25,4 +25,20 @@ IntelliLink Launch Instructions
    npm run dev
    ```
 
+5. **Use the IntelliLink CLI**
+   The repository includes a simple command line utility for plugin installation,
+   user management, and health checks.
+   ```bash
+   # install a plugin
+   python tools/intellilink-cli/intellilink_cli.py plugin install PLUGIN_NAME
+
+   # manage users
+   python tools/intellilink-cli/intellilink_cli.py user add USERNAME
+   python tools/intellilink-cli/intellilink_cli.py user remove USERNAME
+   python tools/intellilink-cli/intellilink_cli.py user list
+
+   # perform a health check
+   python tools/intellilink-cli/intellilink_cli.py health
+   ```
+
 Navigate to the shown URL in your browser to access the platform.
