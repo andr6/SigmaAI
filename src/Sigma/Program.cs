@@ -57,6 +57,7 @@ builder.Services.AddScoped<FunctionTest>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<IModelMetricsService, ModelMetricsService>();
 builder.Services.AddScoped<BackgroundJobService>();
+builder.Services.AddSingleton<SimulationService>();
 builder.Services.AddScoped<IHttpService, HttpService>();
 builder.Services.AddScoped<IImportKMSService, ImportKMSService>();
 builder.Services.AddScoped<IKernelService, KernelService>();
