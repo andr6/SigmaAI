@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using Sigma;
 using Sigma.Core.Common;
 using Sigma.Core.Domain.Service;
 
@@ -7,12 +9,23 @@ namespace Sigma.plugins.Functions;
 
 public class CyberIntelFunctions
 {
-    private readonly MitreMappingService _mitreMappingService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CyberIntelFunctions(MitreMappingService mitreMappingService)
+    public CyberIntelFunctions(IHttpContextAccessor httpContextAccessor)
     {
-        _mitreMappingService = mitreMappingService;
+        _httpContextAccessor = httpContextAccessor;
     }
+
+    private void EnsureAdmin()
+    {
+        var user = _httpContextAccessor.HttpContext?.User;
+        if (user == null || !user.IsInRole(RoleConstants.Admin))
+        {
+            throw new UnauthorizedAccessException("User is not authorized to invoke this function.");
+        }
+    }
+
+
     /// <summary>
     /// Extract IOCs from a CTI PDF report using the CyberIntel runner.
     /// </summary>
@@ -21,6 +34,7 @@ public class CyberIntelFunctions
     [SigmaFunction]
     public string ExtractIocs(string pdfPath)
     {
+        EnsureAdmin();
         var psi = new ProcessStartInfo
         {
             FileName = "python3",
@@ -48,6 +62,7 @@ public class CyberIntelFunctions
     [SigmaFunction]
     public string GenerateRules(string iocJson)
     {
+        EnsureAdmin();
         var document = JsonDocument.Parse(iocJson);
         var rules = new Dictionary<string, List<string>>
         {

@@ -44,6 +44,13 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(PolicyConstants.RequireAdmin, policy => policy.RequireRole(RoleConstants.Admin));
+    options.AddPolicy(PolicyConstants.RequireUser, policy => policy.RequireRole(RoleConstants.User, RoleConstants.Admin));
+});
 
 builder.Services.AddScoped(sp => new HttpClient
 {
@@ -176,6 +183,22 @@ app.MapRazorComponents<Sigma.Client.App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
+
+app.Run();
+
+namespace Sigma;
+
+public static class RoleConstants
+{
+    public const string Admin = "SigmaAdmin";
+    public const string User = "SigmaUser";
+}
+
+public static class PolicyConstants
+{
+    public const string RequireAdmin = "RequireAdmin";
+    public const string RequireUser = "RequireUser";
+}
 
 app.MapControllers();
 
