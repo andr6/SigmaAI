@@ -1,10 +1,30 @@
-﻿using Sigma.Core.Common;
+using Microsoft.AspNetCore.Http;
+using Sigma;
+using Sigma.Core.Common;
 using Sigma.Core.Repositories;
 
 namespace Sigma.plugins.Functions
 {
-    public class FunctionTest(IAIModels_Repositories Repository)
+    public class FunctionTest
     {
+        private readonly IAIModels_Repositories _repository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public FunctionTest(IAIModels_Repositories repository, IHttpContextAccessor httpContextAccessor)
+        {
+            _repository = repository;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        private void EnsureAdmin()
+        {
+            var user = _httpContextAccessor.HttpContext?.User;
+            if (user == null || !user.IsInRole(RoleConstants.Admin))
+            {
+                throw new UnauthorizedAccessException("User is not authorized to invoke this function.");
+            }
+        }
+
         /// <summary>
         /// 获取订单信息
         /// </summary>
@@ -13,6 +33,7 @@ namespace Sigma.plugins.Functions
         [SigmaFunction]
         public string GetOrder(int id)
         {
+            EnsureAdmin();
             return $"""
                     订单ID: {id}
                     商品名：小米MIX4
@@ -29,8 +50,10 @@ namespace Sigma.plugins.Functions
         [SigmaFunction]
         public string GetModels()
         {
-            var models = Repository.GetList();
+            EnsureAdmin();
+            var models = _repository.GetList();
             return string.Join(",", models.Select(x => x.ModelName));
         }
     }
 }
+

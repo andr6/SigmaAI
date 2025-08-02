@@ -23,6 +23,7 @@ using Sigma.Services.LLamaSharp;
 using Sigma;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,13 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(PolicyConstants.RequireAdmin, policy => policy.RequireRole(RoleConstants.Admin));
+    options.AddPolicy(PolicyConstants.RequireUser, policy => policy.RequireRole(RoleConstants.User, RoleConstants.Admin));
+});
 
 builder.Services.AddScoped(sp => new HttpClient
 {
@@ -57,6 +65,7 @@ builder.Services.AddScoped<FunctionTest>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<IModelMetricsService, ModelMetricsService>();
 builder.Services.AddScoped<BackgroundJobService>();
+builder.Services.AddSingleton<SimulationService>();
 builder.Services.AddScoped<IHttpService, HttpService>();
 builder.Services.AddScoped<IImportKMSService, ImportKMSService>();
 builder.Services.AddScoped<IKernelService, KernelService>();
@@ -77,8 +86,10 @@ builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISecurityAssessmentService, SecurityAssessmentService>();
+builder.Services.AddScoped<MitreMappingService>();
 
 builder.Services.AddQueue();
+builder.Services.AddScheduler();
 
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddScoped<AuditInterceptor>();
@@ -107,6 +118,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.Configure<DBConnectionOption>(builder.Configuration.GetSection("DBConnection"));
 builder.Services.Configure<LoginOption>(builder.Configuration.GetSection("Login"));
 builder.Services.Configure<LLamaSharpOption>(builder.Configuration.GetSection("LLamaSharp"));
+builder.Services.Configure<PrometheusConfig>(builder.Configuration.GetSection("PrometheusConfig"));
 
 var llamaOptions = builder.Configuration.GetSection("LLamaSharp").Get<LLamaSharpOption>() ?? new();
 if (llamaOptions.RunType.ToUpper() == "CPU")
@@ -119,6 +131,13 @@ else if (llamaOptions.RunType.ToUpper() == "GPU")
 }
 
 var app = builder.Build();
+
+var prometheusConfig = builder.Configuration.GetSection("PrometheusConfig").Get<PrometheusConfig>() ?? new();
+if (prometheusConfig.Enabled)
+{
+    app.UseMetricServer(prometheusConfig.MetricsEndpoint);
+    app.UseHttpMetrics();
+}
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
@@ -135,6 +154,18 @@ if (userManager.FindByNameAsync("admin").GetAwaiter().GetResult() == null)
     var user = new ApplicationUser { UserName = "admin", Email = "admin@example.com", EmailConfirmed = true };
     userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
 }
+
+app.Services.UseScheduler(scheduler =>
+{
+    var retentionDays = app.Configuration.GetValue<int>("Retention:ChatHistoryDays", 30);
+    scheduler.Schedule(async () =>
+    {
+        using var cleanupScope = app.Services.CreateScope();
+        var cleanupDb = cleanupScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var cutoff = DateTime.UtcNow.AddDays(-retentionDays);
+        await cleanupDb.ChatHistories.Where(x => x.CreatedAt < cutoff).ExecuteDeleteAsync();
+    }).Daily();
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -176,3 +207,22 @@ app.MapRazorComponents<Sigma.Client.App>()
 app.MapAdditionalIdentityEndpoints();
 
 app.Run();
+
+
+namespace Sigma;
+
+public static class RoleConstants
+{
+    public const string Admin = "SigmaAdmin";
+    public const string User = "SigmaUser";
+}
+
+public static class PolicyConstants
+{
+    public const string RequireAdmin = "RequireAdmin";
+    public const string RequireUser = "RequireUser";
+}
+
+app.MapControllers();
+
+

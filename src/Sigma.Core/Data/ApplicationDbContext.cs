@@ -30,16 +30,21 @@ namespace Sigma.Data
 
         public DbSet<ChatHistory> ChatHistories { get; set; }
 
+        public DbSet<Sigma.Core.Repositories.ThreatIntel.MitreMapping> MitreMappings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Plugin>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
-            builder.Entity<Apps>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
-            builder.Entity<Kmss>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
-            builder.Entity<KmsDetails>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
-            builder.Entity<AIModels>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
-            builder.Entity<Users>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
-            builder.Entity<Chat>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
-            builder.Entity<ChatHistory>().HasQueryFilter(x => !x.IsDeleted && x.TenantId == TenantId);
+
+            builder.Entity<Plugin>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<Apps>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<Kmss>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<KmsDetails>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<AIModels>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<Users>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<Chat>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<ChatHistory>().HasQueryFilter(x => !x.IsDeleted);
+            builder.Entity<Sigma.Core.Repositories.ThreatIntel.MitreMapping>().HasQueryFilter(x => !x.IsDeleted);
+
 
             base.OnModelCreating(builder);
         }
