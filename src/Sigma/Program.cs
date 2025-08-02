@@ -77,6 +77,7 @@ builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISecurityAssessmentService, SecurityAssessmentService>();
+builder.Services.AddScoped<MitreMappingService>();
 
 builder.Services.AddQueue();
 
@@ -174,5 +175,7 @@ app.MapRazorComponents<Sigma.Client.App>()
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
+
+app.MapControllers();
 
 app.Run();

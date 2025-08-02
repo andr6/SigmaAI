@@ -1,10 +1,17 @@
 using System.Diagnostics;
 using Sigma.Core.Common;
+using Sigma.Core.Domain.Service;
 
 namespace Sigma.plugins.Functions;
 
 public class CyberRangeFunctions
 {
+    private readonly MitreMappingService _mitreMappingService;
+
+    public CyberRangeFunctions(MitreMappingService mitreMappingService)
+    {
+        _mitreMappingService = mitreMappingService;
+    }
     /// <summary>
     /// Start the GAN cyber range simulation.
     /// </summary>
@@ -12,7 +19,9 @@ public class CyberRangeFunctions
     [SigmaFunction]
     public string StartSimulation()
     {
-        return RunCommand("start");
+        var output = RunCommand("start");
+        _mitreMappingService.MapAndStore(output);
+        return output;
     }
 
     /// <summary>
@@ -22,7 +31,9 @@ public class CyberRangeFunctions
     [SigmaFunction]
     public string GetMetrics()
     {
-        return RunCommand("metrics");
+        var output = RunCommand("metrics");
+        _mitreMappingService.MapAndStore(output);
+        return output;
     }
 
     /// <summary>
@@ -32,7 +43,9 @@ public class CyberRangeFunctions
     [SigmaFunction]
     public string StopSimulation()
     {
-        return RunCommand("stop");
+        var output = RunCommand("stop");
+        _mitreMappingService.MapAndStore(output);
+        return output;
     }
 
     private static string RunCommand(string command)
