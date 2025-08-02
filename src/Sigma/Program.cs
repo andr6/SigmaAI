@@ -64,6 +64,7 @@ builder.Services.AddScoped<FunctionTest>();
 builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<IModelMetricsService, ModelMetricsService>();
 builder.Services.AddScoped<BackgroundJobService>();
+builder.Services.AddSingleton<SimulationService>();
 builder.Services.AddScoped<IHttpService, HttpService>();
 builder.Services.AddScoped<IImportKMSService, ImportKMSService>();
 builder.Services.AddScoped<IKernelService, KernelService>();
@@ -84,6 +85,7 @@ builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISecurityAssessmentService, SecurityAssessmentService>();
+builder.Services.AddScoped<MitreMappingService>();
 
 builder.Services.AddQueue();
 
@@ -197,3 +199,7 @@ public static class PolicyConstants
     public const string RequireAdmin = "RequireAdmin";
     public const string RequireUser = "RequireUser";
 }
+
+app.MapControllers();
+
+app.Run();

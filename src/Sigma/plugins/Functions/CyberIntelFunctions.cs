@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Sigma;
 using Sigma.Core.Common;
+using Sigma.Core.Domain.Service;
 
 namespace Sigma.plugins.Functions;
 
@@ -23,6 +24,7 @@ public class CyberIntelFunctions
             throw new UnauthorizedAccessException("User is not authorized to invoke this function.");
         }
     }
+
 
     /// <summary>
     /// Extract IOCs from a CTI PDF report using the CyberIntel runner.
@@ -95,6 +97,8 @@ public class CyberIntelFunctions
         }
 
         var options = new JsonSerializerOptions { WriteIndented = true };
-        return JsonSerializer.Serialize(rules, options);
+        var result = JsonSerializer.Serialize(rules, options);
+        _mitreMappingService.MapAndStore(result);
+        return result;
     }
 }

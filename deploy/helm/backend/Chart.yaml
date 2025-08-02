@@ -1,0 +1,5 @@
+apiVersion: v2
+name: backend
+version: 0.1.0
+description: Helm chart for Sigma backend service
+appVersion: "1.0"

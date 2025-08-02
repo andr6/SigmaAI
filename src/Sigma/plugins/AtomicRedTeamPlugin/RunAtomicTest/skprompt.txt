@@ -1,0 +1,5 @@
+Execute the specified Atomic Red Team test and capture the console output.
+
+Test ID: {{$testId}}
+
+Return only the output of the test execution.

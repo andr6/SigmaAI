@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Sigma;
 using Sigma.Core.Common;
+using Sigma.Core.Domain.Service;
 
 namespace Sigma.plugins.Functions;
 
@@ -23,6 +24,7 @@ public class CyberRangeFunctions
         }
     }
 
+
     /// <summary>
     /// Start the GAN cyber range simulation.
     /// </summary>
@@ -32,6 +34,9 @@ public class CyberRangeFunctions
     {
         EnsureAdmin();
         return RunCommand("start");
+        var output = RunCommand("start");
+        _mitreMappingService.MapAndStore(output);
+        return output;
     }
 
     /// <summary>
@@ -43,6 +48,9 @@ public class CyberRangeFunctions
     {
         EnsureAdmin();
         return RunCommand("metrics");
+        var output = RunCommand("metrics");
+        _mitreMappingService.MapAndStore(output);
+        return output;
     }
 
     /// <summary>
@@ -54,6 +62,9 @@ public class CyberRangeFunctions
     {
         EnsureAdmin();
         return RunCommand("stop");
+        var output = RunCommand("stop");
+        _mitreMappingService.MapAndStore(output);
+        return output;
     }
 
     private static string RunCommand(string command)

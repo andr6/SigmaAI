@@ -1,0 +1,17 @@
+image:
+  repository: your-repo/dotnet
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+env:
+  ConnectionStrings__DefaultConnection: "Data Source=/data/Sigma.db;"
+
+secrets:
+  EXA_API_KEY: ""
+
+storage:
+  size: 1Gi

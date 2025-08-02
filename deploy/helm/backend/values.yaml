@@ -1,0 +1,22 @@
+image:
+  repository: your-repo/backend
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+env:
+  DATABASE_URL: "sqlite:////data/ioc.db"
+
+secrets:
+  OPENAI_API_KEY: ""
+  OTX_API_KEY: ""
+  SHODAN_API_KEY: ""
+  CENSYS_UID: ""
+  CENSYS_SECRET: ""
+  VT_API_KEY: ""
+
+storage:
+  size: 1Gi
