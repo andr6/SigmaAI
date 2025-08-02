@@ -79,6 +79,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISecurityAssessmentService, SecurityAssessmentService>();
 
 builder.Services.AddQueue();
+builder.Services.AddScheduler();
 
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 builder.Services.AddScoped<AuditInterceptor>();
@@ -135,6 +136,18 @@ if (userManager.FindByNameAsync("admin").GetAwaiter().GetResult() == null)
     var user = new ApplicationUser { UserName = "admin", Email = "admin@example.com", EmailConfirmed = true };
     userManager.CreateAsync(user, "password").GetAwaiter().GetResult();
 }
+
+app.Services.UseScheduler(scheduler =>
+{
+    var retentionDays = app.Configuration.GetValue<int>("Retention:ChatHistoryDays", 30);
+    scheduler.Schedule(async () =>
+    {
+        using var cleanupScope = app.Services.CreateScope();
+        var cleanupDb = cleanupScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var cutoff = DateTime.UtcNow.AddDays(-retentionDays);
+        await cleanupDb.ChatHistories.Where(x => x.CreatedAt < cutoff).ExecuteDeleteAsync();
+    }).Daily();
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
