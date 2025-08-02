@@ -34,8 +34,9 @@ except Exception:  # pragma: no cover - best effort import
 
 from .ingest import fetch_censys, fetch_otx, fetch_shodan, fetch_virustotal
 from .llm import summarize_iocs
-from .models import Indicator
 
+from .models import Indicator
+from .graph_db import write_indicator
 
 DATABASE_URL = "sqlite:///./ioc.db"
 engine = create_engine(DATABASE_URL, echo=False)
@@ -99,7 +100,9 @@ def ingest_iocs(session: Session = Depends(get_session)):
         iocs.extend(fetch_virustotal(ip))
     for ioc in iocs:
         session.add(ioc)
+        codex/new-task
         _notify(ioc)
+        write_indicator(ioc)        
     session.commit()
     return iocs
 
